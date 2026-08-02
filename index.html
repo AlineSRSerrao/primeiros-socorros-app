@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1" />
+<title>Primeiros Socorros na Palma da Mão</title>
+<meta name="description" content="Guia educativo de primeiros socorros para o público leigo." />
+<meta name="theme-color" content="#0B1F44" />
+<link rel="manifest" href="manifest.json" />
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
+<link rel="icon" href="icons/favicon-192.png" />
+<link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+<header class="app-header">
+  <div class="brand-row">
+    <img class="brand-mark" src="img/heart-icon-header.png" alt="Ícone do aplicativo — coração pulsante" />
+    <div class="brand-title">
+      Primeiros Socorros na Palma da Mão
+      <small>Projeto Jovens Talentos · FAPERJ · ETESC</small>
+    </div>
+  </div>
+  <div class="emergency-bar">
+    <a href="tel:192"><span class="num">192</span> SAMU</a>
+    <a href="tel:193"><span class="num">193</span> Bombeiros</a>
+  </div>
+</header>
+
+<div class="search-wrap">
+  <input id="busca" type="search" placeholder="Buscar situação (ex: queimadura, engasgo)..." aria-label="Buscar módulo" />
+</div>
+
+<main id="app"></main>
+
+<footer class="app-footer">
+  <img class="footer-assinatura" src="img/assinatura-faetec.png" alt="FAETEC — Secretaria de Ciência, Tecnologia e Inovação — Governo do Estado do Rio de Janeiro" loading="lazy" />
+  <p class="footer-copy">Projeto Jovens Talentos · FAPERJ — material educativo, não substitui atendimento médico.</p>
+</footer>
+
+<div id="toast" class="toast"></div>
+
+<button id="btn-topo" class="btn-topo" aria-label="Voltar ao topo">
+  <span class="btn-topo-icone" aria-hidden="true">↑</span>
+  <span class="btn-topo-texto"><span class="btn-topo-prefixo">Voltar ao </span>Topo</span>
+</button>
+
+<nav class="bottom-nav" aria-label="Navegação principal">
+  <button class="bottom-nav-btn ativo" data-route="inicio" aria-label="Início">
+    <span class="bottom-nav-icone" aria-hidden="true">🏠</span>
+    <span>Início</span>
+  </button>
+  <button class="bottom-nav-btn" data-route="guias" aria-label="Ilustrações">
+    <span class="bottom-nav-icone" aria-hidden="true">📋</span>
+    <span>Ilustrações</span>
+  </button>
+  <button class="bottom-nav-btn" data-route="estudos" aria-label="Referências">
+    <span class="bottom-nav-icone" aria-hidden="true">📚</span>
+    <span>Referências</span>
+  </button>
+  <button class="bottom-nav-btn" data-route="sobre" aria-label="Sobre o projeto">
+    <span class="bottom-nav-icone" aria-hidden="true">ℹ️</span>
+    <span>Sobre</span>
+  </button>
+</nav>
+
+<script src="js/modules-data.js"></script>
+<script src="js/paginas.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
