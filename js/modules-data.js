@@ -209,6 +209,7 @@ const MODULOS = [
     titulo: "Afogamento",
     cor: "#0277BD",
     icone: "🌊",
+    imagem: "img/afogamento-ilustracao.webp",
     resumo: "Dificuldade respiratória por submersão ou imersão em água.",
     sinais: [
       "Cabeça baixa na água, boca na altura da superfície",
@@ -338,6 +339,7 @@ const MODULOS = [
     titulo: "Desmaio (síncope)",
     cor: "#1565C0",
     icone: "💫",
+    imagem: "img/desmaio-ilustracao.webp",
     resumo: "Perda súbita e breve da consciência.",
     sinais: ["Tontura, visão escurecida antes de cair", "Palidez e sudorese"],
     passos: [
@@ -529,6 +531,7 @@ const MODULOS = [
       {
         id: "mordida-animal",
         nome: "Mordida de animais",
+        imagem: "img/mordida-animal-ilustracao.webp",
         sinais: [
           "Ferimento com marcas de dentes, podendo haver sangramento",
           "Risco de infecção e de exposição à raiva"

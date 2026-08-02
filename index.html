@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 <title>Primeiros Socorros na Palma da Mão</title>
 <meta name="description" content="Guia educativo de primeiros socorros para o público leigo." />
 <meta name="theme-color" content="#0B1F44" />
@@ -39,6 +39,16 @@
 </footer>
 
 <div id="toast" class="toast"></div>
+
+<div class="lightbox" id="lightbox" hidden>
+  <div class="lightbox-barra">
+    <a class="lightbox-btn" id="lightbox-download" download>
+      <span aria-hidden="true">⬇️</span> Baixar
+    </a>
+    <button class="lightbox-btn" id="lightbox-fechar" aria-label="Fechar">✕</button>
+  </div>
+  <img id="lightbox-img" src="" alt="" />
+</div>
 
 <button id="btn-topo" class="btn-topo" aria-label="Voltar ao topo">
   <span class="btn-topo-icone" aria-hidden="true">↑</span>

@@ -175,7 +175,7 @@ function blocoConteudo(dados) {
     titulo: "Ver ilustração",
     icone: "🖼️",
     conteudoHtml: dados.imagem
-      ? `<img src="${dados.imagem}" alt="Ilustração do procedimento: ${dados.nome || dados.titulo || ""}" loading="lazy" style="${dados.imagemLargura ? `width:${dados.imagemLargura}; margin:0 auto;` : ""}" />`
+      ? `<img class="img-ampliavel" src="${dados.imagem}" alt="Ilustração do procedimento: ${dados.nome || dados.titulo || ""}" loading="lazy" style="cursor:zoom-in;${dados.imagemLargura ? ` width:${dados.imagemLargura}; margin:0 auto;` : ""}" />`
       : `<p class="em-breve">Em breve adicionaremos uma ilustração para este tópico. Estamos atualizando o conteúdo — volte em breve!</p>`
   }));
 
@@ -384,29 +384,15 @@ function renderGuias() {
         </div>
       `).join("")}
     </div>
-
-    <div class="lightbox" id="lightbox" hidden>
-      <button class="lightbox-fechar" id="lightbox-fechar" aria-label="Fechar">✕</button>
-      <img id="lightbox-img" src="" alt="" />
-    </div>
   `;
 
   atualizarNavAtiva("guias");
 
-  const lightbox = document.getElementById("lightbox");
-  const lightboxImg = document.getElementById("lightbox-img");
-
   document.querySelectorAll(".poster-card").forEach((card) => {
     card.addEventListener("click", () => {
-      lightboxImg.src = card.dataset.imagem;
-      lightboxImg.alt = card.dataset.titulo;
-      lightbox.hidden = false;
+      abrirLightbox(card.dataset.imagem, card.dataset.titulo);
     });
   });
-
-  const fecharLightbox = () => { lightbox.hidden = true; lightboxImg.src = ""; };
-  document.getElementById("lightbox-fechar").addEventListener("click", fecharLightbox);
-  lightbox.addEventListener("click", (e) => { if (e.target === lightbox) fecharLightbox(); });
 }
 
 // ---------- Rodapé de navegação fixo ----------
@@ -463,6 +449,42 @@ window.addEventListener("popstate", () => irComTransicao(rotearHash));
 
 // Rota inicial (permite abrir direto num módulo, faixa/tipo, ou página institucional via link)
 rotearHash();
+
+// ---- Lightbox global: amplia e permite baixar qualquer ilustração (módulos e pôsteres) ----
+const lightbox = document.getElementById("lightbox");
+const lightboxImg = document.getElementById("lightbox-img");
+const lightboxDownload = document.getElementById("lightbox-download");
+
+function nomeArquivoDownload(titulo, src) {
+  const ext = src.split(".").pop().split("?")[0];
+  const base = (titulo || "ilustracao")
+    .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
+  return `${base || "ilustracao"}.${ext}`;
+}
+
+function abrirLightbox(src, titulo) {
+  lightboxImg.src = src;
+  lightboxImg.alt = titulo || "";
+  lightboxDownload.href = src;
+  lightboxDownload.setAttribute("download", nomeArquivoDownload(titulo, src));
+  lightbox.hidden = false;
+}
+
+function fecharLightbox() {
+  lightbox.hidden = true;
+  lightboxImg.src = "";
+}
+
+document.getElementById("lightbox-fechar").addEventListener("click", fecharLightbox);
+lightbox.addEventListener("click", (e) => { if (e.target === lightbox) fecharLightbox(); });
+document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !lightbox.hidden) fecharLightbox(); });
+
+// Qualquer ilustração de módulo (dentro do accordion "Ver ilustração") também amplia ao tocar.
+app.addEventListener("click", (e) => {
+  const img = e.target.closest(".img-ampliavel");
+  if (img) abrirLightbox(img.getAttribute("src"), img.getAttribute("alt"));
+});
 
 // ---- Botão flutuante 'Voltar ao topo' ----
 const btnTopo = document.getElementById("btn-topo");

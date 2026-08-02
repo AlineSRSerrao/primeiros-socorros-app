@@ -11,6 +11,12 @@ const PAGINA_SOBRE = {
       Santa Cruz - RJ).`
     },
     {
+      titulo: "Em desenvolvimento",
+      texto: `Este projeto encontra-se em desenvolvimento. Esta ainda não é a versão final do
+      aplicativo — conteúdos, ilustrações e funcionalidades continuam sendo revisados e
+      atualizados.`
+    },
+    {
       titulo: "Objetivo",
       texto: `Levar orientações confiáveis e de fácil compreensão sobre primeiros socorros ao
       público leigo, de forma gratuita e acessível, incentivando uma cultura de cuidado e
@@ -38,7 +44,8 @@ const PAGINA_GUIAS = {
       posteres: [
         { titulo: "Engasgo — Guia de Primeiros Socorros", imagem: "img/guia-engasgo.webp" },
         { titulo: "Reanimação Cardiopulmonar (RCP)", imagem: "img/guia-rcp.webp" },
-        { titulo: "Afogamento", imagem: "img/guia-afogamento.webp" }
+        { titulo: "Afogamento", imagem: "img/guia-afogamento.webp" },
+        { titulo: "Utilização do DEA", imagem: "img/guia-dea.webp" }
       ]
     },
     {
@@ -46,7 +53,8 @@ const PAGINA_GUIAS = {
       posteres: [
         { titulo: "Queimaduras", imagem: "img/guia-queimaduras.webp" },
         { titulo: "Fraturas e Entorses", imagem: "img/guia-fraturas.webp" },
-        { titulo: "Sangramento Intenso", imagem: "img/guia-sangramento.webp" }
+        { titulo: "Sangramento Intenso", imagem: "img/guia-sangramento.webp" },
+        { titulo: "Mordidas de Animais", imagem: "img/guia-mordidas.webp" }
       ]
     },
     {
@@ -79,6 +87,15 @@ const PAGINA_ESTUDOS = {
           link: {
             texto: "Acessar site (SBQueimaduras)",
             url: "https://sbqueimaduras.org.br/profissional-saude"
+          }
+        },
+        {
+          titulo: "Cartilha de Segurança e Desempenho: Desfibrilador Automático Externo",
+          texto: `Fonte: Agência Nacional de Vigilância Sanitária (Anvisa), edição revisada e ampliada de 2025.
+          A reprodução parcial ou integral é permitida para uso não comercial, desde que a fonte seja citada.`,
+          link: {
+            texto: "Acessar cartilha (gov.br/Anvisa)",
+            url: "https://www.gov.br/anvisa/pt-br/centraisdeconteudo/publicacoes/monitoramento/tecnovigilancia/cartilha-de-seguranca-e-desempenho-desfibrilador-automatico-externo"
           }
         }
       ]

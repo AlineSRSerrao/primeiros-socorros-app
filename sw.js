@@ -1,6 +1,6 @@
 // Service Worker — cache offline-first.
 // Em uma emergência a conexão pode falhar; o app precisa abrir mesmo assim.
-const CACHE_NAME = "primeiros-socorros-v35";
+const CACHE_NAME = "primeiros-socorros-v36";
 const ASSETS = [
   "./",
   "./index.html",
@@ -32,6 +32,9 @@ const ASSETS = [
   "./img/fraturas-ilustracao.webp",
   "./img/hemorragia-nasal.webp",
   "./img/intoxicacao-ilustracao.webp",
+  "./img/desmaio-ilustracao.webp",
+  "./img/mordida-animal-ilustracao.webp",
+  "./img/afogamento-ilustracao.webp",
   "./img/guia-insolacao.webp",
   "./img/guia-intoxicacao.webp",
   "./img/guia-queimaduras.webp",
@@ -39,7 +42,9 @@ const ASSETS = [
   "./img/guia-rcp.webp",
   "./img/guia-engasgo.webp",
   "./img/guia-sangramento.webp",
-  "./img/guia-afogamento.webp"
+  "./img/guia-afogamento.webp",
+  "./img/guia-dea.webp",
+  "./img/guia-mordidas.webp"
 ];
 
 self.addEventListener("install", (event) => {
