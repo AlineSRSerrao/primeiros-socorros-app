@@ -395,6 +395,54 @@ function renderGuias() {
   });
 }
 
+function blocoComparativoColuna(coluna, classeExtra) {
+  return `
+    <div class="bloco comparativo-col ${classeExtra}">
+      <h3>${coluna.icone ? `${coluna.icone} ` : ""}${coluna.titulo}</h3>
+      ${coluna.descricao ? `<p class="comparativo-desc">${coluna.descricao}</p>` : ""}
+      <ul>${coluna.itens.map((i) => `<li>${i}</li>`).join("")}</ul>
+    </div>
+  `;
+}
+
+function renderSamuBombeiros() {
+  atualizarContextoBusca("samu-bombeiros");
+  window.scrollTo(0, 0);
+  const pagina = PAGINA_SAMU_BOMBEIROS;
+
+  app.innerHTML = `
+    <div class="tela-pagina">
+      <button class="voltar-btn" id="voltar-comparativo">← Voltar</button>
+      <h1 class="pagina-titulo">${pagina.titulo}</h1>
+      <p class="pagina-subtitulo">${pagina.subtitulo}</p>
+
+      <div class="comparativo-grid">
+        ${blocoComparativoColuna(pagina.samu, "comparativo-samu")}
+        ${blocoComparativoColuna(pagina.bombeiros, "comparativo-bombeiros")}
+      </div>
+
+      <div class="bloco comparativo-ambos">
+        <h3>${pagina.ambos.titulo}</h3>
+        <ul>${pagina.ambos.itens.map((i) => `<li>${i}</li>`).join("")}</ul>
+      </div>
+
+      <div class="disclaimer">
+        Esta divisão é uma orientação geral e pode variar conforme o município.
+        Em qualquer emergência real, ligue e siga as instruções de quem atender.
+      </div>
+    </div>
+  `;
+
+  document.getElementById("voltar-comparativo").addEventListener("click", () => {
+    history.back();
+  });
+}
+
+document.getElementById("btn-samu-bombeiros").addEventListener("click", () => {
+  history.pushState({}, "", "#samu-bombeiros");
+  irComTransicao(renderSamuBombeiros);
+});
+
 // ---------- Rodapé de navegação fixo ----------
 function atualizarNavAtiva(routeName) {
   document.querySelectorAll(".bottom-nav-btn").forEach((btn) => {
@@ -434,6 +482,7 @@ function rotearHash() {
   if (hash === "sobre") { renderSobre(); return; }
   if (hash === "guias") { renderGuias(); return; }
   if (hash === "estudos") { renderEstudos(); return; }
+  if (hash === "samu-bombeiros") { renderSamuBombeiros(); return; }
 
   const [moduloId, subId] = hash.split("/");
   if (moduloId && MODULOS.some((m) => m.id === moduloId)) {

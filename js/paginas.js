@@ -35,6 +35,56 @@ const PAGINA_SOBRE = {
   ]
 };
 
+// NOTA PARA REVISÃO: divisão de atribuições entre SAMU e Bombeiros baseada em
+// conhecimento público geral (SAMU = atendimento médico de urgência; Corpo de
+// Bombeiros = resgate, salvamento e emergências ambientais/estruturais).
+// Não é uma fonte oficial verificada — confirme os itens, principalmente os
+// mais específicos, com os canais oficiais do SAMU-RJ e do CBMERJ antes de
+// publicar, já que o protocolo pode variar entre municípios.
+const PAGINA_SAMU_BOMBEIROS = {
+  titulo: "SAMU ou Bombeiros?",
+  subtitulo: "Em caso de dúvida na hora de ligar, veja o que cada serviço atende. Se não tiver certeza, ligue para qualquer um dos dois — o atendente orienta e aciona o serviço correto.",
+  samu: {
+    titulo: "SAMU — 192",
+    icone: "🚑",
+    descricao: "Emergências de saúde: quando a vida corre risco por um problema médico.",
+    itens: [
+      "Mal súbito: suspeita de infarto ou AVC",
+      "Falta de ar grave, crise asmática severa",
+      "Convulsões e crises de ansiedade/pânico intensas",
+      "Desmaio ou perda de consciência",
+      "Partos e complicações na gravidez",
+      "Intoxicações e envenenamentos",
+      "Crises psiquiátricas e tentativas de suicídio",
+      "Feridos em acidentes de trânsito (atendimento e transporte médico)",
+      "Queimaduras graves e traumas com suspeita de fratura"
+    ]
+  },
+  bombeiros: {
+    titulo: "Corpo de Bombeiros — 193",
+    icone: "🚒",
+    descricao: "Resgate, salvamento e situações de risco físico ou ambiental.",
+    itens: [
+      "Incêndios (residenciais, veiculares, florestais)",
+      "Resgate de pessoas presas em ferragens após acidente",
+      "Afogamentos e resgates aquáticos ou em altura",
+      "Vazamento de gás ou produto químico perigoso",
+      "Desabamentos e quedas de estrutura",
+      "Resgate em locais de difícil acesso (poços, elevadores presos)",
+      "Choque elétrico com fiação exposta em via pública",
+      "Animais peçonhentos ou silvestres soltos em via pública (em muitas cidades)"
+    ]
+  },
+  ambos: {
+    titulo: "Na dúvida, ou quando envolve os dois",
+    itens: [
+      "Se a situação tem risco à vida E precisa de resgate/extração (ex.: acidente com pessoa presa nas ferragens), normalmente os dois serviços são acionados juntos.",
+      "Ligue para qualquer um dos dois números — o atendente identifica a emergência e aciona o serviço adequado.",
+      "O importante é ligar rápido e informar com clareza o que está acontecendo e o endereço."
+    ]
+  }
+};
+
 const PAGINA_GUIAS = {
   titulo: "Ilustrações",
   subtitulo: "Pôsteres de consulta rápida, organizados por categoria. Toque para ampliar.",

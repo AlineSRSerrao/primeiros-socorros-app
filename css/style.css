@@ -98,6 +98,35 @@ header.app-header {
 .emergency-bar a:active { transform: scale(0.97); box-shadow: 0 1px 4px rgba(211,47,47,0.3); }
 .emergency-bar a .num { font-size: 1.1rem; }
 
+/* Botão que leva à comparação SAMU x Bombeiros — logo abaixo dos números,
+   para tirar a dúvida bem no momento em que a pessoa vai ligar. */
+.btn-comparativo {
+  width: 100%;
+  margin-top: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  background: rgba(255,255,255,0.12);
+  border: 1px solid rgba(255,255,255,0.35);
+  color: #fff;
+  font-weight: 700;
+  font-size: 0.78rem;
+  padding: 9px 12px;
+  border-radius: 10px;
+  cursor: pointer;
+  min-height: 38px;
+  transition: background .15s ease, transform .1s ease;
+}
+.btn-comparativo:active { transform: scale(0.98); background: rgba(255,255,255,0.2); }
+.btn-comparativo:focus-visible { outline: 2px solid #fff; outline-offset: 1px; }
+.btn-comparativo-icone {
+  color: #FFD54F;
+  font-weight: 800;
+  font-size: 0.95rem;
+  line-height: 1;
+}
+
 /* ---------- Busca ---------- */
 .search-wrap { padding: 16px 20px 4px; }
 #busca {
@@ -343,6 +372,30 @@ main {
   border-radius: 3px;
   padding: 0 1px;
   box-shadow: 0 0 0 1px rgba(0,0,0,0.06);
+}
+
+/* ---------- Comparativo SAMU x Bombeiros ---------- */
+.comparativo-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+}
+.comparativo-col { border-top: 4px solid transparent; margin-bottom: 0; }
+.comparativo-samu { border-top-color: var(--red); }
+.comparativo-bombeiros { border-top-color: var(--navy); }
+.comparativo-col h3 {
+  text-transform: none;
+  font-size: 1rem;
+  letter-spacing: 0;
+  color: var(--ink);
+  margin: 0 0 4px;
+}
+.comparativo-desc { margin: 0 0 10px; font-size: 0.85rem; color: var(--muted); line-height: 1.4; }
+.comparativo-ambos { margin-top: 12px; background: #EEF1F7; border-color: #DCE2EF; }
+.comparativo-ambos h3 { text-transform: none; font-size: 0.95rem; letter-spacing: 0; color: var(--navy); }
+
+@media (min-width: 560px) {
+  .comparativo-grid { grid-template-columns: 1fr 1fr; }
 }
 
 /* ---------- Guias Rápidos (pôsteres) ---------- */

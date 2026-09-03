@@ -549,6 +549,126 @@ const MODULOS = [
       }
     ]
   },
+  // NOTA PARA REVISÃO CLÍNICA: este módulo é sobre primeiros socorros psicológicos
+  // (crise de ansiedade/pânico), não uma condição física. Peça para a equipe de
+  // Enfermagem revisar a técnica de respiração e a linguagem antes de publicar —
+  // conteúdo baseado em orientações gerais de suporte em crise, não é diagnóstico.
+  {
+    id: "ansiedade",
+    titulo: "Crise de ansiedade",
+    cor: "#00ACC1",
+    icone: "🧘",
+    imagem: "img/ansiedade-ilustracao.webp",
+    resumo: "Medo ou pânico intensos, com sintomas físicos, sem causa física aparente.",
+    sinais: [
+      "Respiração acelerada ou sensação de falta de ar",
+      "Coração acelerado (palpitações), aperto ou dor leve no peito",
+      "Tremores, suor frio, tontura ou formigamento nas mãos",
+      "Medo intenso, sensação de perigo iminente ou de estar 'perdendo o controle'"
+    ],
+    passos: [
+      "Fale em tom calmo e baixo. Apresente-se e pergunte o nome da pessoa.",
+      "Leve-a para um local mais calmo e arejado, se possível, e afaste curiosos.",
+      "Ajude a regular a respiração: inspire contando até 4, segure por 4, solte contando até 6 a 8 — respire junto com a pessoa para dar o ritmo.",
+      "Use uma técnica de ancoragem: peça para a pessoa nomear em voz alta 5 coisas que vê, 4 que ouve e 3 que sente ao toque.",
+      "Fique ao lado dela até a crise passar — costuma durar entre 10 e 30 minutos.",
+      "Se for a primeira crise da pessoa, se ela tiver histórico de problema cardíaco, ou se a dor no peito e a falta de ar não melhorarem, procure atendimento médico (192) para descartar causas físicas."
+    ],
+    naoFaca: [
+      "Não diga frases que minimizem o que ela sente, como 'é só nervoso, se acalma'.",
+      "Não peça para respirar dentro de um saco de papel — é uma técnica antiga e pode ser perigosa.",
+      "Não deixe a pessoa sozinha durante a crise.",
+      "Não segure ou contenha a pessoa à força."
+    ]
+  },
+  // NOTA PARA REVISÃO CLÍNICA: choque elétrico pode causar lesões internas e
+  // arritmias sem sinal externo visível. Peça para a equipe de Enfermagem
+  // confirmar a ordem dos passos (segurança da cena antes de qualquer contato)
+  // antes de publicar.
+  {
+    id: "choque-eletrico",
+    titulo: "Choque elétrico",
+    cor: "#FFB300",
+    icone: "⚡",
+    imagem: "img/choque-eletrico-ilustracao.webp",
+    resumo: "Contato do corpo com corrente elétrica. A segurança da cena vem antes de tudo.",
+    sinais: [
+      "Marcas de queimadura no ponto de entrada e saída da corrente",
+      "Pode não haver marca visível, mesmo com lesão interna grave",
+      "Parada cardiorrespiratória, arritmia, inconsciência",
+      "Dor muscular, formigamento ou fraqueza"
+    ],
+    passos: [
+      "Antes de tocar na vítima, verifique se ela ainda está em contato com a fonte de energia — se estiver, NÃO a toque.",
+      "Se for seguro e rápido, desligue o disjuntor ou desconecte a fonte de energia.",
+      "Se não for possível desligar a energia, afaste a vítima da fonte usando um objeto seco e não condutor (madeira, plástico, borracha) — nunca com as mãos ou objetos metálicos/molhados.",
+      "Só depois de garantir que não há mais contato com a corrente, ligue 192 e verifique respiração e consciência.",
+      "Se a pessoa não estiver respirando ou não responder, inicie a RCP.",
+      "Cubra queimaduras visíveis com um pano limpo e seco, sem apertar, enquanto aguarda o socorro."
+    ],
+    naoFaca: [
+      "Não toque na vítima enquanto ela estiver em contato com a fonte de energia.",
+      "Não use objetos metálicos ou molhados para afastar a vítima da fonte.",
+      "Não subestime um choque elétrico só porque não há queimadura visível — a pessoa deve ser avaliada em um hospital mesmo parecendo bem."
+    ]
+  },
+  // NOTA PARA REVISÃO CLÍNICA: distinguir "objeto no olho" (pode ter remoção
+  // simples) de "produto químico no olho" (lavagem prolongada, emergência) é
+  // importante — peça para a equipe de Enfermagem confirmar os tempos de
+  // lavagem e os critérios de quando NÃO tentar remover o objeto.
+  {
+    id: "trauma-ocular",
+    titulo: "Trauma Ocular (Objeto ou Química nos Olhos)",
+    cor: "#00897B",
+    icone: "👁️",
+    resumo: "Objeto ou produto químico atingindo o olho. Toque no tipo.",
+    abasLabel: "Tipo de trauma",
+    subcategorias: [
+      {
+        id: "objeto",
+        nome: "Objeto no olho",
+        imagem: "img/trauma-ocular-ilustracao.webp",
+        sinais: [
+          "Dor, vermelhidão e lacrimejamento excessivo",
+          "Sensação de algo preso no olho",
+          "Dificuldade para abrir o olho, sensibilidade à luz"
+        ],
+        passos: [
+          "Lave bem as mãos antes de tocar perto do olho.",
+          "Não deixe a pessoa esfregar o olho.",
+          "Tente lavar o olho com água limpa ou soro fisiológico, direcionando o jato do canto interno para o externo.",
+          "Se o objeto estiver visível na parte branca do olho e sair facilmente com a lavagem ou com a ponta de um pano limpo e úmido, sem tocar na parte colorida (córnea), pode tentar remover delicadamente.",
+          "Se não sair com a lavagem, ou estiver cravado ou sobre a parte colorida do olho, cubra o olho sem pressionar e procure atendimento médico."
+        ],
+        naoFaca: [
+          "Não tente remover objetos cravados ou que estejam sobre a córnea.",
+          "Não esfregue o olho.",
+          "Não use pinças ou objetos pontiagudos."
+        ]
+      },
+      {
+        id: "quimica",
+        nome: "Produto químico no olho",
+        imagem: "img/trauma-ocular-ilustracao.webp",
+        sinais: [
+          "Dor intensa e ardência",
+          "Vermelhidão, visão embaçada, lacrimejamento intenso",
+          "Espasmo das pálpebras (dificuldade de manter o olho aberto)"
+        ],
+        passos: [
+          "Ligue 192 ou o Centro de Intoxicações (0800 722 6001) enquanto já começa a lavagem.",
+          "Lave o olho imediatamente com água corrente limpa (ou soro fisiológico), em abundância, por pelo menos 15 a 20 minutos contínuos.",
+          "Mantenha a pálpebra bem aberta durante a lavagem, direcionando a água do canto interno para o externo, para não contaminar o outro olho.",
+          "Se a pessoa usar lentes de contato, remova-as assim que possível durante a lavagem.",
+          "Depois de lavar, cubra o olho com um pano limpo, sem apertar, e leve a pessoa a um hospital — se possível, leve a embalagem do produto."
+        ],
+        naoFaca: [
+          "Não interrompa a lavagem antes do tempo recomendado, mesmo que a dor melhore.",
+          "Não tente neutralizar o produto químico com outra substância."
+        ]
+      }
+    ]
+  },
   {
     id: "calor",
     titulo: "Insolação e exaustão pelo calor",
@@ -570,5 +690,116 @@ const MODULOS = [
       "Chame ajuda se houver confusão mental, desmaio ou temperatura muito elevada."
     ],
     naoFaca: ["Não ofereça bebidas com álcool ou cafeína.", "Não force líquidos se a pessoa estiver confusa ou inconsciente."]
+  },
+  // NOTA PARA REVISÃO CLÍNICA: classificação de gravidade (leve/moderada/grave)
+  // e as faixas de temperatura baseadas em tuasaude.com/hipotermia — é um site
+  // de conteúdo de saúde, não uma fonte médica oficial/primária. Peça para a
+  // equipe de Enfermagem confirmar as faixas de temperatura, a orientação de
+  // manusear a vítima grave com o mínimo de movimento possível (risco de
+  // arritmia), e o método canguru descrito na aba Bebê, antes de publicar.
+  {
+    id: "hipotermia",
+    titulo: "Hipotermia por exposição ao frio",
+    cor: "#3F51B5",
+    icone: "❄️",
+    resumo: "Temperatura corporal abaixo de 35°C por exposição ao frio. Toque na faixa.",
+    abasLabel: "Gravidade / idade",
+    subcategorias: [
+      {
+        id: "bebe",
+        nome: "Bebê (até 1 ano)",
+        imagem: "img/hipotermia-bebe.webp",
+        sinais: [
+          "Pele fria ao toque, podendo parecer vermelha e brilhante",
+          "Bebê muito quieto, com pouca energia",
+          "Reage menos que o normal a estímulos",
+          "Recusa mamar ou comer"
+        ],
+        passos: [
+          "Leve o bebê para um ambiente aquecido imediatamente e ligue 192 — bebês perdem calor muito mais rápido que adultos e o quadro pode evoluir rápido.",
+          "Retire roupas ou fraldas molhadas e substitua por roupas secas.",
+          "Aqueça o bebê em contato pele a pele com um adulto, cobrindo os dois com um cobertor (método canguru), e cubra a cabeça dele com um gorro.",
+          "Continue observando a respiração do bebê enquanto aguarda o socorro."
+        ],
+        naoFaca: [
+          "Não ofereça bebidas ou alimentos ao bebê tentando aquecê-lo.",
+          "Não use bolsa de água quente, secador ou outra fonte de calor direta na pele — a pele do bebê é sensível e pode queimar.",
+          "Não demore para chamar ajuda — em bebês, a hipotermia pode evoluir rapidamente."
+        ]
+      },
+      {
+        id: "leve",
+        nome: "Leve (33°C–35°C)",
+        imagem: "img/hipotermia-guia-pratico.webp",
+        sinais: [
+          "Temperatura corporal aproximada: 33°C a 35°C",
+          "Tremores",
+          "Mãos e pés frios",
+          "Dormência nos braços e pernas",
+          "Perda de destreza (dificuldade com movimentos finos)",
+          "Cansaço"
+        ],
+        passos: [
+          "Leve a pessoa para um ambiente aquecido e abrigado do vento.",
+          "Retire roupas molhadas e substitua por roupas secas.",
+          "Cubra com cobertores e agasalhos, priorizando tronco, pescoço e cabeça.",
+          "Se a pessoa estiver bem alerta e conseguir engolir sem dificuldade, ofereça bebidas mornas e açucaradas.",
+          "Mesmo em casos leves, procure atendimento médico assim que possível."
+        ],
+        naoFaca: [
+          "Não ofereça bebidas alcoólicas — elas aumentam a perda de calor do corpo.",
+          "Não aqueça a pessoa de forma brusca (água muito quente, fogo direto) — o aquecimento deve ser gradual."
+        ]
+      },
+      {
+        id: "moderada",
+        nome: "Moderada (30°C–33°C)",
+        imagem: "img/hipotermia-guia-pratico.webp",
+        sinais: [
+          "Temperatura corporal aproximada: 30°C a 33°C",
+          "Tremores violentos e incontroláveis",
+          "Fala lenta e arrastada",
+          "Respiração mais lenta e fraca, pulso fraco",
+          "Dificuldade para controlar os movimentos do corpo",
+          "Desatenção, perda de memória ou sonolência"
+        ],
+        passos: [
+          "Ligue 192 imediatamente.",
+          "Leve a pessoa para um ambiente aquecido, retire roupas molhadas e cubra com cobertores secos.",
+          "Movimente a pessoa com cuidado e o mínimo possível — nessa fase, movimentos bruscos podem provocar arritmia cardíaca.",
+          "Priorize aquecer o tronco antes das extremidades."
+        ],
+        naoFaca: [
+          "Não ofereça bebidas ou alimentos se a pessoa estiver sonolenta ou confusa — risco de engasgo.",
+          "Não movimente a pessoa bruscamente.",
+          "Não massageie ou esfregue as extremidades com força."
+        ]
+      },
+      {
+        id: "grave",
+        nome: "Grave (abaixo de 30°C)",
+        imagem: "img/hipotermia-guia-pratico.webp",
+        sinais: [
+          "Temperatura corporal aproximada: abaixo de 30°C",
+          "Perda de controle dos braços e pernas",
+          "Perda dos sentidos / consciência",
+          "Respiração superficial, podendo chegar a parar",
+          "Pulso irregular ou muito difícil de perceber",
+          "Pupilas dilatadas"
+        ],
+        passos: [
+          "Ligue 192 imediatamente — é uma emergência.",
+          "Manuseie a pessoa com o mínimo de movimento possível — movimentos bruscos podem provocar arritmia grave e parada cardíaca nessa fase.",
+          "Retire-a do frio e do vento, isolando-a do chão frio; retire roupas molhadas e cubra com cobertores secos, sem tentar reaquecer bruscamente.",
+          "Verifique respiração e pulso com calma — em hipotermia grave eles podem estar muito fracos e lentos, então confira por mais tempo que o normal antes de concluir que a pessoa está em parada.",
+          "Se realmente não houver respiração nem pulso, inicie a RCP e continue até a chegada do socorro."
+        ],
+        naoFaca: [
+          "Não movimente a pessoa bruscamente.",
+          "Não ofereça nada por via oral.",
+          "Não considere a pessoa sem chances só porque os sinais vitais parecem muito fracos ou ausentes — confirme com calma; em hipotermia grave o socorro médico ainda pode reanimar."
+        ]
+      }
+    ]
   }
 ];
