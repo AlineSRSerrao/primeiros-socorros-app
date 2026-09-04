@@ -258,6 +258,180 @@ function renderLista(filtro = "") {
   });
 }
 
+// ---------- Acessibilidade: leitura em voz alta dos passos ----------
+const VELOCIDADES_FALA = [
+  { id: "lenta", label: "Lenta", rate: 0.75 },
+  { id: "normal", label: "Normal", rate: 1.0 },
+  { id: "rapida", label: "Rápida", rate: 1.5 }
+];
+let velocidadeFala = 1.0;
+let textoFalaAtual = null;
+let utteranceAtual = null;
+
+function textoParaFala(titulo, dados) {
+  const partes = [`${titulo}.`];
+  if (dados.sinais && dados.sinais.length) {
+    partes.push(`Como identificar: ${dados.sinais.join(". ")}.`);
+  }
+  if (dados.passos && dados.passos.length) {
+    partes.push(`O que fazer: ${dados.passos.map((p, i) => `Passo ${i + 1}: ${p}`).join(" ")}`);
+  }
+  if (dados.naoFaca && dados.naoFaca.length) {
+    partes.push(`Atenção, o que não fazer: ${dados.naoFaca.join(". ")}.`);
+  }
+  return partes.join(" ");
+}
+
+function pararLeitura() {
+  if ("speechSynthesis" in window) window.speechSynthesis.cancel();
+  textoFalaAtual = null;
+  utteranceAtual = null;
+  document.querySelectorAll(".tts-btn.ativo").forEach((b) => {
+    b.classList.remove("ativo");
+    b.textContent = "🔊 Ativar leitura por voz";
+  });
+}
+
+function falar(texto, btn) {
+  const utter = new SpeechSynthesisUtterance(texto);
+  utter.lang = "pt-BR";
+  utter.rate = velocidadeFala;
+  // Guarda contra o evento assíncrono de uma fala anterior (cancelada ao trocar
+  // de velocidade) interromper esta nova fala que já está em andamento.
+  utter.onend = () => { if (utter === utteranceAtual) pararLeitura(); };
+  utter.onerror = () => { if (utter === utteranceAtual) pararLeitura(); };
+  utteranceAtual = utter;
+  btn.classList.add("ativo");
+  btn.textContent = "⏹️ Parar leitura";
+  window.speechSynthesis.speak(utter);
+}
+
+function alternarLeitura(texto, btn) {
+  if (!("speechSynthesis" in window)) {
+    mostrarToast("Seu navegador não tem suporte a leitura em voz alta.");
+    return;
+  }
+  if (window.speechSynthesis.speaking) {
+    pararLeitura();
+    return;
+  }
+  pararMetronomo();
+  textoFalaAtual = texto;
+  falar(texto, btn);
+}
+
+function blocoBotaoLeitura() {
+  return `
+    <button class="tts-btn" id="tts-btn" type="button">🔊 Ativar leitura por voz</button>
+    <div class="velocidade-fala" role="group" aria-label="Velocidade da leitura">
+      <span class="velocidade-label">Velocidade:</span>
+      ${VELOCIDADES_FALA.map((v) => `
+        <button class="chip-velocidade ${v.rate === velocidadeFala ? "ativo" : ""}"
+                type="button" data-vel="${v.rate}">${v.label}</button>
+      `).join("")}
+    </div>
+  `;
+}
+
+function ativarLeitura(escopo, titulo, dados) {
+  const btn = escopo.querySelector("#tts-btn");
+  if (!btn) return;
+  btn.addEventListener("click", () => {
+    alternarLeitura(textoParaFala(titulo, dados), btn);
+  });
+
+  escopo.querySelectorAll(".chip-velocidade").forEach((chip) => {
+    chip.addEventListener("click", () => {
+      velocidadeFala = parseFloat(chip.dataset.vel);
+      escopo.querySelectorAll(".chip-velocidade").forEach((c) => c.classList.remove("ativo"));
+      chip.classList.add("ativo");
+      // Se já está lendo, reinicia na nova velocidade sem precisar parar manualmente.
+      if (textoFalaAtual && window.speechSynthesis.speaking) {
+        window.speechSynthesis.cancel();
+        falar(textoFalaAtual, btn);
+      }
+    });
+  });
+}
+
+// ---------- Metrônomo de RCP (100-120 compressões por minuto) ----------
+const METRONOMO_BPM = 110;
+let metronomoInterval = null;
+let metronomoAudioCtx = null;
+
+function tocarBipMetronomo() {
+  if (!metronomoAudioCtx) {
+    const AudioCtx = window.AudioContext || window.webkitAudioContext;
+    if (!AudioCtx) return;
+    metronomoAudioCtx = new AudioCtx();
+  }
+  const ctx = metronomoAudioCtx;
+  const osc = ctx.createOscillator();
+  const gain = ctx.createGain();
+  osc.frequency.value = 880;
+  osc.connect(gain);
+  gain.connect(ctx.destination);
+  gain.gain.setValueAtTime(0.0001, ctx.currentTime);
+  gain.gain.exponentialRampToValueAtTime(0.3, ctx.currentTime + 0.01);
+  gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.09);
+  osc.start();
+  osc.stop(ctx.currentTime + 0.1);
+}
+
+function pulsarMetronomo() {
+  const pulso = document.getElementById("metronomo-pulso");
+  if (!pulso) return;
+  pulso.classList.add("pulsando");
+  setTimeout(() => pulso.classList.remove("pulsando"), 120);
+}
+
+function iniciarMetronomo() {
+  pararLeitura();
+  const btn = document.getElementById("metronomo-btn");
+  tocarBipMetronomo();
+  pulsarMetronomo();
+  metronomoInterval = setInterval(() => {
+    tocarBipMetronomo();
+    pulsarMetronomo();
+  }, 60000 / METRONOMO_BPM);
+  if (btn) {
+    btn.textContent = "⏸️ Parar ritmo";
+    btn.classList.add("ativo");
+  }
+}
+
+function pararMetronomo() {
+  if (metronomoInterval) {
+    clearInterval(metronomoInterval);
+    metronomoInterval = null;
+  }
+  const btn = document.getElementById("metronomo-btn");
+  if (btn) {
+    btn.textContent = "▶️ Iniciar ritmo";
+    btn.classList.remove("ativo");
+  }
+}
+
+function blocoMetronomoRCP() {
+  return `
+    <div class="bloco metronomo-rcp">
+      <h3>Metrônomo de RCP</h3>
+      <p class="metronomo-desc">Toque para ouvir o ritmo das compressões — ${METRONOMO_BPM} por minuto (dentro da faixa recomendada de 100 a 120).</p>
+      <div class="metronomo-visual"><div class="metronomo-pulso" id="metronomo-pulso">❤️</div></div>
+      <button class="metronomo-btn" id="metronomo-btn" type="button">▶️ Iniciar ritmo</button>
+    </div>
+  `;
+}
+
+function ativarMetronomo(escopo) {
+  const btn = escopo.querySelector("#metronomo-btn");
+  if (!btn) return;
+  btn.addEventListener("click", () => {
+    if (metronomoInterval) pararMetronomo();
+    else iniciarMetronomo();
+  });
+}
+
 // ---------- Tela de módulo ----------
 function renderModulo(id, subId) {
   atualizarContextoBusca("modulo");
@@ -293,6 +467,10 @@ function renderModulo(id, subId) {
         <p>${m.resumo}</p>
       </div>
 
+      ${blocoBotaoLeitura()}
+
+      ${m.id === "rcp" ? blocoMetronomoRCP() : ""}
+
       ${temSub && m.videos ? blocoSecaoVideos(m.videos) : ""}
 
       ${conteudoHtml}
@@ -307,6 +485,12 @@ function renderModulo(id, subId) {
   });
 
   ativarAccordions(app);
+
+  const dadosAtuais = temSub ? subAtual : m;
+  const tituloFala = temSub ? `${m.titulo}, ${subAtual.nome}` : m.titulo;
+  ativarLeitura(app, tituloFala, dadosAtuais);
+
+  if (m.id === "rcp") ativarMetronomo(app);
 
   if (temSub) {
     document.querySelectorAll(".tab-sub").forEach((btn) => {
@@ -461,6 +645,8 @@ document.querySelectorAll(".bottom-nav-btn").forEach((btn) => {
 
 // Transição suave entre telas, com fallback silencioso em navegadores sem suporte.
 function irComTransicao(fn) {
+  pararLeitura();
+  pararMetronomo();
   if (document.startViewTransition) {
     document.startViewTransition(fn);
   } else {

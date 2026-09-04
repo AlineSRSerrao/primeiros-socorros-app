@@ -220,6 +220,77 @@ main {
 .modulo-hero h2 { margin: 0 0 6px; font-size: 1.3rem; }
 .modulo-hero p { margin: 0; opacity: 0.92; font-size: 0.9rem; }
 
+/* ---------- Leitura em voz alta (acessibilidade) ---------- */
+.tts-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  background: #fff;
+  border: 1px solid #DDE2EC;
+  color: var(--navy);
+  font-weight: 700;
+  font-size: 0.88rem;
+  padding: 12px 16px;
+  border-radius: var(--radius);
+  margin-bottom: 12px;
+  box-shadow: var(--shadow-sm);
+  cursor: pointer;
+  min-height: 48px;
+  transition: background .15s ease, color .15s ease, transform .1s ease;
+}
+.tts-btn:active { transform: scale(0.98); }
+.tts-btn.ativo { background: var(--navy); color: #fff; border-color: var(--navy); }
+.tts-btn:focus-visible { outline: 2px solid var(--navy-light); outline-offset: 2px; }
+
+.velocidade-fala {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: -4px 2px 12px;
+}
+.velocidade-label { font-size: 0.78rem; color: var(--muted); font-weight: 600; }
+.chip-velocidade {
+  border: 1px solid #DDE2EC;
+  background: #fff;
+  color: var(--navy);
+  font-weight: 700;
+  font-size: 0.78rem;
+  padding: 6px 12px;
+  border-radius: 999px;
+  cursor: pointer;
+  min-height: 32px;
+  transition: background .15s ease, color .15s ease, border-color .15s ease, transform .1s ease;
+}
+.chip-velocidade:active { transform: scale(0.96); }
+.chip-velocidade.ativo { background: var(--navy); color: #fff; border-color: var(--navy); }
+.chip-velocidade:focus-visible { outline: 2px solid var(--navy-light); outline-offset: 2px; }
+
+/* ---------- Metrônomo de RCP ---------- */
+.metronomo-rcp { text-align: center; }
+.metronomo-desc { margin: 0 0 14px; font-size: 0.85rem; color: var(--muted); line-height: 1.4; }
+.metronomo-visual { display: flex; justify-content: center; margin-bottom: 16px; }
+.metronomo-pulso { font-size: 2.6rem; line-height: 1; transition: transform .08s ease; }
+.metronomo-pulso.pulsando { transform: scale(1.35); }
+.metronomo-btn {
+  background: var(--navy);
+  color: #fff;
+  border: none;
+  padding: 12px 22px;
+  border-radius: 999px;
+  font-weight: 700;
+  font-size: 0.9rem;
+  cursor: pointer;
+  min-height: 44px;
+  box-shadow: var(--shadow-sm);
+  transition: background .15s ease, transform .1s ease;
+}
+.metronomo-btn:active { transform: scale(0.97); }
+.metronomo-btn.ativo { background: var(--red); }
+.metronomo-btn:focus-visible { outline: 2px solid var(--navy-light); outline-offset: 2px; }
+
 .bloco {
   background: var(--card-bg);
   border-radius: var(--radius);
