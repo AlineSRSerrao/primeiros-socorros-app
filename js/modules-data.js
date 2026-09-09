@@ -360,8 +360,8 @@ const MODULOS = [
     videos: [
       {
         titulo: "Assistir vídeo explicativo",
-        tituloCompleto: "Parada cardiorrespiratória: RCP em adultos",
-        url: "https://www.youtube.com/watch?v=DeltcXuIkl0"
+        tituloCompleto: "Como fazer reanimação cardíaca? — Dr. Drauzio Varella",
+        url: "https://www.youtube.com/watch?v=j0Jwj8KKY5c"
       }
     ],
     resumo: "A pessoa não responde e não respira normalmente.",

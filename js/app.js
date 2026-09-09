@@ -543,7 +543,43 @@ function renderPaginaEstatica(pagina, routeName) {
 }
 
 function renderSobre() { renderPaginaEstatica(PAGINA_SOBRE, "sobre"); }
-function renderEstudos() { renderPaginaEstatica(PAGINA_ESTUDOS, "estudos"); }
+
+function renderEstudos() {
+  atualizarContextoBusca("estudos");
+  window.scrollTo(0, 0);
+  const pagina = PAGINA_ESTUDOS;
+
+  const conteudoHtml = pagina.categorias.map((cat) => `
+    <div class="categoria-estudo">
+      <h2 class="categoria-titulo">${cat.titulo}</h2>
+      ${cat.itens.map(blocoItemEstudo).join("")}
+    </div>
+  `).join("");
+
+  app.innerHTML = `
+    <div class="tela-pagina">
+      <h1 class="pagina-titulo">${pagina.titulo}</h1>
+      <div class="categoria-estudo">
+        <h2 class="categoria-titulo">Pratique</h2>
+        <button class="quiz-cta" id="btn-abrir-quiz" type="button">
+          <span class="quiz-cta-icone" aria-hidden="true">📝</span>
+          <span class="quiz-cta-texto">
+            <strong>Teste seus conhecimentos</strong>
+            <span>${QUIZ_QTD_PERGUNTAS} perguntas de múltipla escolha, sorteadas dos módulos do app</span>
+          </span>
+          <span class="quiz-cta-seta" aria-hidden="true">→</span>
+        </button>
+      </div>
+      ${conteudoHtml}
+    </div>
+  `;
+  atualizarNavAtiva("estudos");
+
+  document.getElementById("btn-abrir-quiz").addEventListener("click", () => {
+    history.pushState({}, "", "#quiz");
+    irComTransicao(renderQuiz);
+  });
+}
 
 function renderGuias() {
   atualizarContextoBusca("guias");
@@ -627,6 +663,199 @@ document.getElementById("btn-samu-bombeiros").addEventListener("click", () => {
   irComTransicao(renderSamuBombeiros);
 });
 
+// ---------- Tema claro/escuro ----------
+// Por padrão segue a preferência do sistema/navegador (prefers-color-scheme);
+// a escolha manual do usuário é salva no localStorage e tem prioridade
+// (a leitura inicial já acontece antes do CSS carregar, num script inline
+// no <head>, para não piscar o tema errado ao abrir o app).
+const TEMA_STORAGE_KEY = "tema-preferido";
+
+function temaEfetivo() {
+  const salvo = document.documentElement.getAttribute("data-theme");
+  if (salvo === "dark" || salvo === "light") return salvo;
+  return window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+}
+
+function atualizarBotaoTema() {
+  const btn = document.getElementById("btn-tema");
+  if (!btn) return;
+  const icone = btn.querySelector(".btn-tema-icone");
+  // Botão compacto, só com ícone — o aria-label descreve a ação (o que vai
+  // acontecer ao tocar), para quem usa leitor de tela.
+  if (temaEfetivo() === "dark") {
+    icone.textContent = "☀️";
+    btn.setAttribute("aria-label", "Ativar tema claro");
+  } else {
+    icone.textContent = "🌙";
+    btn.setAttribute("aria-label", "Ativar tema escuro");
+  }
+}
+
+function alternarTema() {
+  const novo = temaEfetivo() === "dark" ? "light" : "dark";
+  document.documentElement.setAttribute("data-theme", novo);
+  try { localStorage.setItem(TEMA_STORAGE_KEY, novo); } catch (e) { /* modo privado etc. */ }
+  atualizarBotaoTema();
+}
+
+document.getElementById("btn-tema").addEventListener("click", alternarTema);
+atualizarBotaoTema();
+
+if (window.matchMedia) {
+  window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", () => {
+    // Só reage à mudança do sistema se o usuário nunca escolheu manualmente.
+    if (!document.documentElement.hasAttribute("data-theme")) atualizarBotaoTema();
+  });
+}
+
+// ---------- Teste seus conhecimentos (quiz) ----------
+// Sem IA — só sorteio simples sobre um banco fixo de perguntas de múltipla
+// escolha (js/quiz-data.js), baseadas no próprio conteúdo dos módulos.
+const QUIZ_QTD_PERGUNTAS = 10;
+
+let quizPerguntasAtuais = [];
+let quizIndiceAtual = 0;
+let quizAcertos = 0;
+
+function embaralhar(array) {
+  const copia = [...array];
+  for (let i = copia.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [copia[i], copia[j]] = [copia[j], copia[i]];
+  }
+  return copia;
+}
+
+// Embaralha também a ordem das opções de cada pergunta sorteada (mantendo
+// qual é a correta) — sem isso, a resposta certa ficaria sempre na mesma
+// posição no banco de perguntas, o que entregaria a resposta de graça.
+function embaralharOpcoesPergunta(pergunta) {
+  const indices = embaralhar(pergunta.opcoes.map((_, i) => i));
+  return {
+    ...pergunta,
+    opcoes: indices.map((i) => pergunta.opcoes[i]),
+    correta: indices.indexOf(pergunta.correta)
+  };
+}
+
+function sortearPerguntasQuiz(qtd) {
+  return embaralhar(QUIZ_PERGUNTAS)
+    .slice(0, Math.min(qtd, QUIZ_PERGUNTAS.length))
+    .map(embaralharOpcoesPergunta);
+}
+
+function iniciarQuiz() {
+  quizPerguntasAtuais = sortearPerguntasQuiz(QUIZ_QTD_PERGUNTAS);
+  quizIndiceAtual = 0;
+  quizAcertos = 0;
+  renderQuizPergunta();
+}
+
+function renderQuiz() {
+  atualizarContextoBusca("quiz");
+  atualizarNavAtiva("estudos");
+  iniciarQuiz();
+}
+
+function renderQuizPergunta() {
+  window.scrollTo(0, 0);
+  const total = quizPerguntasAtuais.length;
+  const p = quizPerguntasAtuais[quizIndiceAtual];
+  const numero = quizIndiceAtual + 1;
+
+  app.innerHTML = `
+    <div class="tela-pagina tela-quiz">
+      <button class="voltar-btn" id="voltar-quiz">← Voltar</button>
+      <h1 class="pagina-titulo">Teste seus conhecimentos</h1>
+      <p class="pagina-subtitulo">Pergunta ${numero} de ${total} — baseada nos módulos do app.</p>
+
+      <div class="quiz-progresso" role="progressbar" aria-valuenow="${quizIndiceAtual}" aria-valuemin="0" aria-valuemax="${total}">
+        <div class="quiz-progresso-barra" style="width: ${(quizIndiceAtual / total) * 100}%"></div>
+      </div>
+
+      <div class="bloco quiz-pergunta">
+        <p class="quiz-pergunta-texto">${p.pergunta}</p>
+        <div class="quiz-opcoes" id="quiz-opcoes">
+          ${p.opcoes.map((op, i) => `
+            <button class="quiz-opcao" data-indice="${i}" type="button">${op}</button>
+          `).join("")}
+        </div>
+        <div class="quiz-feedback" id="quiz-feedback" hidden></div>
+      </div>
+    </div>
+  `;
+
+  document.getElementById("voltar-quiz").addEventListener("click", () => history.back());
+
+  document.querySelectorAll(".quiz-opcao").forEach((btn) => {
+    btn.addEventListener("click", () => responderQuiz(parseInt(btn.dataset.indice, 10)));
+  });
+}
+
+function responderQuiz(indiceEscolhido) {
+  const p = quizPerguntasAtuais[quizIndiceAtual];
+  const acertou = indiceEscolhido === p.correta;
+  if (acertou) quizAcertos++;
+
+  document.querySelectorAll(".quiz-opcao").forEach((btn, i) => {
+    btn.disabled = true;
+    if (i === p.correta) btn.classList.add("correta");
+    else if (i === indiceEscolhido) btn.classList.add("errada");
+  });
+
+  const ultima = quizIndiceAtual + 1 >= quizPerguntasAtuais.length;
+  const feedback = document.getElementById("quiz-feedback");
+  feedback.hidden = false;
+  feedback.className = "quiz-feedback " + (acertou ? "acerto" : "erro");
+  feedback.innerHTML = `
+    <p class="quiz-feedback-titulo">${acertou ? "✅ Certa resposta!" : "❌ Não foi dessa vez."}</p>
+    <p class="quiz-feedback-texto">${p.explicacao}</p>
+    <button class="quiz-btn-proxima" id="quiz-proxima" type="button">${ultima ? "Ver resultado →" : "Próxima pergunta →"}</button>
+  `;
+
+  document.getElementById("quiz-proxima").addEventListener("click", () => {
+    quizIndiceAtual++;
+    if (quizIndiceAtual < quizPerguntasAtuais.length) {
+      irComTransicao(renderQuizPergunta);
+    } else {
+      irComTransicao(renderQuizResultado);
+    }
+  });
+
+  feedback.scrollIntoView({ behavior: "smooth", block: "nearest" });
+}
+
+function renderQuizResultado() {
+  window.scrollTo(0, 0);
+  const total = quizPerguntasAtuais.length;
+  const pct = Math.round((quizAcertos / total) * 100);
+  let mensagem;
+  if (pct === 100) mensagem = "Mandou muito bem! Você acertou tudo. 🎉";
+  else if (pct >= 70) mensagem = "Muito bom! Você conhece bem os primeiros socorros.";
+  else if (pct >= 40) mensagem = "Bom começo! Vale revisar os módulos das perguntas que errou.";
+  else mensagem = "Vale a pena revisitar os módulos — cada tentativa sorteia perguntas diferentes.";
+
+  app.innerHTML = `
+    <div class="tela-pagina tela-quiz">
+      <button class="voltar-btn" id="voltar-quiz-resultado">← Voltar</button>
+      <h1 class="pagina-titulo">Resultado</h1>
+      <div class="bloco quiz-resultado">
+        <p class="quiz-resultado-pontuacao">${quizAcertos} / ${total}</p>
+        <p class="quiz-resultado-texto">${mensagem}</p>
+        <button class="metronomo-btn" id="quiz-tentar-novamente" type="button">Tentar novamente</button>
+      </div>
+      <div class="disclaimer">
+        Este teste é educativo e não substitui treinamento oficial de primeiros socorros.
+      </div>
+    </div>
+  `;
+
+  document.getElementById("voltar-quiz-resultado").addEventListener("click", () => history.back());
+  document.getElementById("quiz-tentar-novamente").addEventListener("click", () => {
+    irComTransicao(iniciarQuiz);
+  });
+}
+
 // ---------- Rodapé de navegação fixo ----------
 function atualizarNavAtiva(routeName) {
   document.querySelectorAll(".bottom-nav-btn").forEach((btn) => {
@@ -669,6 +898,7 @@ function rotearHash() {
   if (hash === "guias") { renderGuias(); return; }
   if (hash === "estudos") { renderEstudos(); return; }
   if (hash === "samu-bombeiros") { renderSamuBombeiros(); return; }
+  if (hash === "quiz") { renderQuiz(); return; }
 
   const [moduloId, subId] = hash.split("/");
   if (moduloId && MODULOS.some((m) => m.id === moduloId)) {

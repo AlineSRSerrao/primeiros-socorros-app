@@ -12,7 +12,81 @@
   --shadow-md: 0 4px 14px rgba(11,31,68,0.08), 0 1px 3px rgba(11,31,68,0.05);
   --shadow-lg: 0 10px 28px rgba(11,31,68,0.14);
   --nav-height: 64px;
+
+  /* Texto/ícones de destaque (navy usado como cor de texto, não de fundo —
+     precisa clarear no tema escuro para manter contraste). */
+  --accent-text: var(--navy);
+  --border: #EEF0F5;
+  --border-strong: #DDE2EC;
+  --input-bg: #FFFFFF;
+  --nav-bg: #FFFFFF;
+  --nav-border: #EAEDF3;
+  --alerta-bg: #FFF6F6;
+  --alerta-border: #F3C6C6;
+  --alerta-text: var(--red-dark);
+  --link-bg: #EFF6EE;
+  --link-border: #CFE6CC;
+  --link-text: #2E7D32;
+  --painel-bg: #EEF1F7;
+  --painel-border: #DCE2EF;
+  --destaque-bg: #FFEB3B;
+
   font-size: 16px;
+}
+
+/* ---------- Tema escuro ----------
+   Segue a preferência do sistema por padrão; o atributo data-theme no <html>
+   (definido via JS, com persistência em localStorage) permite escolha manual
+   e sempre tem prioridade sobre a preferência do sistema. */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0E1526;
+    --ink: #E7EAF2;
+    --muted: #9AA4BE;
+    --card-bg: #1B2440;
+    --navy-light: #6D93D6;
+    --accent-text: #86AEEA;
+    --border: #2A3454;
+    --border-strong: #3A4568;
+    --input-bg: #212B4A;
+    --nav-bg: #131A30;
+    --nav-border: #2A3454;
+    --alerta-bg: #3A1B1E;
+    --alerta-border: #6B2A2E;
+    --alerta-text: #FF8A80;
+    --link-bg: #16301E;
+    --link-border: #2C5233;
+    --link-text: #81C995;
+    --painel-bg: #1A2340;
+    --painel-border: #2C3860;
+    --shadow-sm: 0 1px 3px rgba(0,0,0,0.25), 0 1px 2px rgba(0,0,0,0.18);
+    --shadow-md: 0 4px 14px rgba(0,0,0,0.32), 0 1px 3px rgba(0,0,0,0.22);
+    --shadow-lg: 0 10px 28px rgba(0,0,0,0.45);
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0E1526;
+  --ink: #E7EAF2;
+  --muted: #9AA4BE;
+  --card-bg: #1B2440;
+  --navy-light: #6D93D6;
+  --accent-text: #86AEEA;
+  --border: #2A3454;
+  --border-strong: #3A4568;
+  --input-bg: #212B4A;
+  --nav-bg: #131A30;
+  --nav-border: #2A3454;
+  --alerta-bg: #3A1B1E;
+  --alerta-border: #6B2A2E;
+  --alerta-text: #FF8A80;
+  --link-bg: #16301E;
+  --link-border: #2C5233;
+  --link-text: #81C995;
+  --painel-bg: #1A2340;
+  --painel-border: #2C3860;
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.25), 0 1px 2px rgba(0,0,0,0.18);
+  --shadow-md: 0 4px 14px rgba(0,0,0,0.32), 0 1px 3px rgba(0,0,0,0.22);
+  --shadow-lg: 0 10px 28px rgba(0,0,0,0.45);
 }
 
 * { box-sizing: border-box; }
@@ -28,12 +102,16 @@ body {
   overscroll-behavior-y: none;
 }
 
-button { font-family: inherit; -webkit-tap-highlight-color: transparent; }
+/* Por padrão o navegador NÃO herda a cor do texto em <button> (fica com a
+   cor padrão do sistema, tipicamente preta) — sem isso, textos dentro de
+   botões sem cor própria (como o título dos cards) ficavam pretos até no
+   tema escuro, quase invisíveis sobre um fundo escuro. */
+button { font-family: inherit; color: inherit; -webkit-tap-highlight-color: transparent; }
 img { max-width: 100%; }
 
 /* ---------- Cabeçalho ---------- */
 header.app-header {
-  background: linear-gradient(160deg, var(--navy) 0%, #1E3A66 42%, #6E86AC 72%, #F7F8FA 100%);
+  background: linear-gradient(160deg, var(--navy) 0%, #1E3A66 42%, #6E86AC 72%, var(--bg) 100%);
   color: #fff;
   padding: 16px 20px 20px;
   position: sticky;
@@ -127,15 +205,37 @@ header.app-header {
   line-height: 1;
 }
 
+/* Botão de alternância de tema claro/escuro — ícone compacto junto ao
+   título do cabeçalho, sempre acessível em qualquer tela do app, sem
+   ocupar uma linha inteira. */
+.btn-tema-compacto {
+  flex-shrink: 0;
+  margin-left: auto;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255,255,255,0.12);
+  border: 1px solid rgba(255,255,255,0.35);
+  border-radius: 50%;
+  cursor: pointer;
+  transition: background .15s ease, transform .1s ease;
+}
+.btn-tema-compacto:active { transform: scale(0.94); background: rgba(255,255,255,0.2); }
+.btn-tema-compacto:focus-visible { outline: 2px solid #fff; outline-offset: 1px; }
+.btn-tema-icone { font-size: 1.15rem; line-height: 1; }
+
 /* ---------- Busca ---------- */
 .search-wrap { padding: 16px 20px 4px; }
 #busca {
   width: 100%;
   padding: 12px 14px;
   border-radius: 12px;
-  border: 1px solid #DDE2EC;
+  border: 1px solid var(--border-strong);
   font-size: 0.95rem;
-  background: #fff;
+  background: var(--input-bg);
+  color: var(--ink);
   box-shadow: var(--shadow-sm);
 }
 #busca:focus-visible { outline: 2px solid var(--navy-light); outline-offset: 1px; }
@@ -154,7 +254,7 @@ main {
   font-weight: 800;
   letter-spacing: -0.01em;
   margin: 0 0 4px;
-  color: var(--navy);
+  color: var(--accent-text);
 }
 .pergunta-emergencia p {
   margin: 0;
@@ -173,7 +273,7 @@ main {
   border-radius: var(--radius);
   padding: 16px 14px;
   text-align: left;
-  border: 1px solid #EEF0F5;
+  border: 1px solid var(--border);
   box-shadow: var(--shadow-sm);
   cursor: pointer;
   display: flex;
@@ -195,12 +295,20 @@ main {
 .card-titulo { font-weight: 700; font-size: 0.92rem; line-height: 1.25; }
 .card-resumo { font-size: 0.78rem; color: var(--muted); line-height: 1.3; }
 
+/* No tema escuro, o título dos cards da tela inicial fica branco puro
+   (em vez do --ink padrão, que é um branco levemente acinzentado) —
+   a descrição continua em --muted, para manter a hierarquia visual. */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .card-titulo { color: #FFFFFF; }
+}
+:root[data-theme="dark"] .card-titulo { color: #FFFFFF; }
+
 /* ---------- Tela de detalhe do módulo ---------- */
 .tela-modulo { padding-bottom: 8px; }
 
 .voltar-btn {
   background: none; border: none;
-  color: var(--navy);
+  color: var(--accent-text);
   font-weight: 700;
   font-size: 0.9rem;
   padding: 4px 0 14px;
@@ -227,9 +335,9 @@ main {
   justify-content: center;
   gap: 8px;
   width: 100%;
-  background: #fff;
-  border: 1px solid #DDE2EC;
-  color: var(--navy);
+  background: var(--input-bg);
+  border: 1px solid var(--border-strong);
+  color: var(--accent-text);
   font-weight: 700;
   font-size: 0.88rem;
   padding: 12px 16px;
@@ -253,9 +361,9 @@ main {
 }
 .velocidade-label { font-size: 0.78rem; color: var(--muted); font-weight: 600; }
 .chip-velocidade {
-  border: 1px solid #DDE2EC;
-  background: #fff;
-  color: var(--navy);
+  border: 1px solid var(--border-strong);
+  background: var(--input-bg);
+  color: var(--accent-text);
   font-weight: 700;
   font-size: 0.78rem;
   padding: 6px 12px;
@@ -296,7 +404,7 @@ main {
   border-radius: var(--radius);
   padding: 16px 18px;
   margin-bottom: 12px;
-  border: 1px solid #EEF0F5;
+  border: 1px solid var(--border);
   box-shadow: var(--shadow-sm);
 }
 .bloco h3 {
@@ -310,9 +418,9 @@ main {
 .bloco li { margin-bottom: 8px; line-height: 1.4; font-size: 0.92rem; }
 .bloco.passos ol { margin: 0; padding-left: 20px; counter-reset: passo; }
 .bloco.passos li { margin-bottom: 12px; line-height: 1.45; font-size: 0.93rem; }
-.bloco.alerta { border-color: #F3C6C6; background: #FFF6F6; }
-.bloco.alerta h3 { color: var(--red-dark); }
-.bloco.alerta li { color: var(--red-dark); }
+.bloco.alerta { border-color: var(--alerta-border); background: var(--alerta-bg); }
+.bloco.alerta h3 { color: var(--alerta-text); }
+.bloco.alerta li { color: var(--alerta-text); }
 .bloco p { margin: 0; line-height: 1.5; font-size: 0.93rem; color: var(--ink); }
 
 .accordion-panel-inner .video-embed {
@@ -344,9 +452,9 @@ main {
   display: flex;
   align-items: center;
   gap: 10px;
-  background: #EFF6EE;
-  border: 1px solid #CFE6CC;
-  color: #2E7D32;
+  background: var(--link-bg);
+  border: 1px solid var(--link-border);
+  color: var(--link-text);
   text-decoration: none;
   font-weight: 700;
   font-size: 0.85rem;
@@ -367,7 +475,7 @@ main {
   background: var(--card-bg);
   border-radius: var(--radius);
   margin-bottom: 12px;
-  border: 1px solid #EEF0F5;
+  border: 1px solid var(--border);
   box-shadow: var(--shadow-sm);
   overflow: hidden;
 }
@@ -382,7 +490,7 @@ main {
   padding: 14px 16px;
   font-weight: 700;
   font-size: 0.88rem;
-  color: var(--navy);
+  color: var(--accent-text);
   cursor: pointer;
   min-height: 48px;
   text-align: left;
@@ -397,7 +505,7 @@ main {
 .accordion-header.aberto .accordion-chevron { transform: rotate(180deg); }
 .accordion-header:focus-visible { outline: 2px solid var(--navy-light); outline-offset: -2px; }
 
-.accordion-panel { border-top: 1px solid #EEF0F5; }
+.accordion-panel { border-top: 1px solid var(--border); }
 .accordion-panel-inner { padding: 14px 16px 16px; }
 .accordion-panel-inner img {
   display: block;
@@ -418,7 +526,7 @@ main {
 .pagina-titulo {
   font-size: 1.3rem;
   font-weight: 800;
-  color: var(--navy);
+  color: var(--accent-text);
   margin: 6px 2px 16px;
 }
 .categoria-estudo { margin-bottom: 22px; }
@@ -438,12 +546,124 @@ main {
 }
 
 .busca-destaque {
-  background: #FFEB3B;
-  color: var(--ink);
+  background: var(--destaque-bg);
+  color: #14213A;
   border-radius: 3px;
   padding: 0 1px;
   box-shadow: 0 0 0 1px rgba(0,0,0,0.06);
 }
+
+/* ---------- Quiz "Teste seus conhecimentos" ---------- */
+.quiz-cta {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 14px 16px;
+  margin-bottom: 12px;
+  box-shadow: var(--shadow-sm);
+  cursor: pointer;
+  text-align: left;
+  min-height: 56px;
+  transition: transform .12s ease, box-shadow .12s ease;
+}
+.quiz-cta:active { transform: scale(0.98); }
+.quiz-cta:focus-visible { outline: 2px solid var(--navy-light); outline-offset: 2px; }
+.quiz-cta-icone { font-size: 1.6rem; flex-shrink: 0; }
+.quiz-cta-texto { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.quiz-cta-texto strong { font-size: 0.95rem; color: var(--ink); }
+.quiz-cta-texto span:last-child { font-size: 0.8rem; color: var(--muted); line-height: 1.35; }
+.quiz-cta-seta { margin-left: auto; flex-shrink: 0; color: var(--muted); font-size: 1.1rem; }
+
+.quiz-progresso {
+  height: 6px;
+  background: var(--border);
+  border-radius: 999px;
+  overflow: hidden;
+  margin: -8px 2px 18px;
+}
+.quiz-progresso-barra {
+  height: 100%;
+  background: var(--navy);
+  border-radius: 999px;
+  transition: width .25s ease;
+}
+
+.quiz-pergunta-texto {
+  margin: 0 0 14px;
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1.4;
+  color: var(--ink);
+}
+.quiz-opcoes { display: flex; flex-direction: column; gap: 8px; }
+.quiz-opcao {
+  text-align: left;
+  background: var(--input-bg);
+  border: 1px solid var(--border-strong);
+  color: var(--ink);
+  font-size: 0.9rem;
+  font-weight: 600;
+  padding: 12px 14px;
+  border-radius: 12px;
+  cursor: pointer;
+  min-height: 44px;
+  line-height: 1.35;
+  transition: background .15s ease, border-color .15s ease, transform .1s ease;
+}
+.quiz-opcao:not(:disabled):active { transform: scale(0.98); }
+.quiz-opcao:not(:disabled):focus-visible { outline: 2px solid var(--navy-light); outline-offset: 2px; }
+.quiz-opcao:disabled { cursor: default; opacity: 0.75; }
+.quiz-opcao.correta {
+  background: var(--link-bg);
+  border-color: var(--link-border);
+  color: var(--link-text);
+  opacity: 1;
+  font-weight: 700;
+}
+.quiz-opcao.errada {
+  background: var(--alerta-bg);
+  border-color: var(--alerta-border);
+  color: var(--alerta-text);
+  opacity: 1;
+  font-weight: 700;
+}
+
+.quiz-feedback {
+  margin-top: 14px;
+  padding: 12px 14px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background: var(--painel-bg);
+}
+.quiz-feedback.acerto { border-color: var(--link-border); background: var(--link-bg); }
+.quiz-feedback.erro { border-color: var(--alerta-border); background: var(--alerta-bg); }
+.quiz-feedback-titulo { margin: 0 0 6px; font-weight: 800; font-size: 0.9rem; color: var(--ink); }
+.quiz-feedback-texto { margin: 0 0 12px; font-size: 0.87rem; line-height: 1.45; color: var(--ink); }
+.quiz-btn-proxima {
+  background: var(--navy);
+  color: #fff;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 999px;
+  font-weight: 700;
+  font-size: 0.85rem;
+  cursor: pointer;
+  min-height: 40px;
+}
+.quiz-btn-proxima:active { transform: scale(0.97); }
+
+.quiz-resultado { text-align: center; }
+.quiz-resultado-pontuacao {
+  font-size: 2.4rem;
+  font-weight: 800;
+  color: var(--accent-text);
+  margin: 4px 0 6px;
+}
+.quiz-resultado-texto { margin: 0 0 16px; color: var(--muted); font-size: 0.92rem; line-height: 1.4; }
 
 /* ---------- Comparativo SAMU x Bombeiros ---------- */
 .comparativo-grid {
@@ -462,8 +682,8 @@ main {
   margin: 0 0 4px;
 }
 .comparativo-desc { margin: 0 0 10px; font-size: 0.85rem; color: var(--muted); line-height: 1.4; }
-.comparativo-ambos { margin-top: 12px; background: #EEF1F7; border-color: #DCE2EF; }
-.comparativo-ambos h3 { text-transform: none; font-size: 0.95rem; letter-spacing: 0; color: var(--navy); }
+.comparativo-ambos { margin-top: 12px; background: var(--painel-bg); border-color: var(--painel-border); }
+.comparativo-ambos h3 { text-transform: none; font-size: 0.95rem; letter-spacing: 0; color: var(--accent-text); }
 
 @media (min-width: 560px) {
   .comparativo-grid { grid-template-columns: 1fr 1fr; }
@@ -477,7 +697,7 @@ main {
 }
 .poster-card {
   background: var(--card-bg);
-  border: 1px solid #EEF0F5;
+  border: 1px solid var(--border);
   border-radius: var(--radius);
   box-shadow: var(--shadow-sm);
   padding: 8px;
@@ -498,7 +718,7 @@ main {
 .poster-titulo {
   font-size: 0.78rem;
   font-weight: 700;
-  color: var(--navy);
+  color: var(--accent-text);
   line-height: 1.3;
   padding: 0 2px 4px;
 }
@@ -577,7 +797,7 @@ main {
 .disclaimer {
   margin-top: 24px;
   padding: 14px 16px;
-  background: #EEF1F7;
+  background: var(--painel-bg);
   border-radius: 12px;
   font-size: 0.76rem;
   color: var(--muted);
@@ -597,9 +817,9 @@ main {
 
 .tab-sub {
   flex: 0 0 auto;
-  border: 1px solid #DDE2EC;
-  background: #fff;
-  color: var(--navy);
+  border: 1px solid var(--border-strong);
+  background: var(--input-bg);
+  color: var(--accent-text);
   font-weight: 700;
   font-size: 0.82rem;
   padding: 10px 14px;
@@ -682,8 +902,8 @@ main {
   left: 0; right: 0; bottom: 0;
   height: calc(var(--nav-height) + env(safe-area-inset-bottom));
   padding-bottom: env(safe-area-inset-bottom);
-  background: #fff;
-  border-top: 1px solid #EAEDF3;
+  background: var(--nav-bg);
+  border-top: 1px solid var(--nav-border);
   box-shadow: 0 -4px 18px rgba(11,31,68,0.10);
   display: flex;
   z-index: 25;
@@ -704,7 +924,7 @@ main {
   min-height: 44px;
 }
 .bottom-nav-icone { font-size: 1.25rem; line-height: 1; }
-.bottom-nav-btn.ativo { color: var(--navy); }
+.bottom-nav-btn.ativo { color: var(--accent-text); }
 .bottom-nav-btn:focus-visible { outline: 2px solid var(--navy-light); outline-offset: -2px; }
 
 /* ---------- Transições de navegação (View Transitions API, com fallback automático) ---------- */

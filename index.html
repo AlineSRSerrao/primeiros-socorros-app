@@ -6,6 +6,18 @@
 <title>Primeiros Socorros na Palma da Mão</title>
 <meta name="description" content="Guia educativo de primeiros socorros para o público leigo." />
 <meta name="theme-color" content="#0B1F44" />
+<script>
+  // Aplica o tema salvo (se houver) antes do CSS renderizar, para evitar
+  // um "flash" do tema errado ao abrir o app.
+  (function () {
+    try {
+      var tema = localStorage.getItem("tema-preferido");
+      if (tema === "dark" || tema === "light") {
+        document.documentElement.setAttribute("data-theme", tema);
+      }
+    } catch (e) { /* modo privado etc. */ }
+  })();
+</script>
 <link rel="manifest" href="manifest.json" />
 <link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
 <link rel="icon" href="icons/favicon-192.png" />
@@ -20,6 +32,9 @@
       Primeiros Socorros na Palma da Mão
       <small>Projeto Jovens Talentos · FAPERJ · ETESC</small>
     </div>
+    <button class="btn-tema-compacto" id="btn-tema" type="button" aria-label="Alternar tema claro ou escuro">
+      <span class="btn-tema-icone" aria-hidden="true">🌙</span>
+    </button>
   </div>
   <div class="emergency-bar">
     <a href="tel:192"><span class="num">192</span> SAMU</a>
@@ -79,6 +94,7 @@
 
 <script src="js/modules-data.js"></script>
 <script src="js/paginas.js"></script>
+<script src="js/quiz-data.js"></script>
 <script src="js/app.js"></script>
 </body>
 </html>
