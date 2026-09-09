@@ -29,6 +29,25 @@ function escapeHtml(str) {
     .replace(/'/g, "&#39;");
 }
 
+// Máscara de telefone brasileiro (contato de emergência do cartão): formata
+// enquanto digita, se adaptando ao celular (DDD + 9 dígitos, com traço antes
+// dos 4 últimos) ou fixo (DDD + 8 dígitos) — ex: (21) 98108-1922 / (21) 2845-5514.
+function formatarTelefoneBR(valor) {
+  const digitos = String(valor || "").replace(/\D/g, "").slice(0, 11);
+  const n = digitos.length;
+  if (n === 0) return "";
+  if (n <= 2) return `(${digitos}`;
+  const ddd = digitos.slice(0, 2);
+  const resto = digitos.slice(2);
+  if (n <= 6) return `(${ddd}) ${resto}`;
+  if (n <= 10) {
+    // Até 8 dígitos locais (telefone fixo): (DD) XXXX-XXXX
+    return `(${ddd}) ${resto.slice(0, resto.length - 4)}-${resto.slice(-4)}`;
+  }
+  // 9 dígitos locais (celular): (DD) XXXXX-XXXX
+  return `(${ddd}) ${resto.slice(0, 5)}-${resto.slice(5, 9)}`;
+}
+
 // ---------- Busca contextual: filtra na Início, destaca (estilo Ctrl+F) nas demais páginas ----------
 let contextoBusca = "inicio";
 
@@ -674,14 +693,28 @@ document.getElementById("btn-samu-bombeiros").addEventListener("click", () => {
   irComTransicao(renderSamuBombeiros);
 });
 
-// ---------- Tema claro/escuro/alto contraste ----------
+// ---------- Tema claro/escuro/alto contraste/daltônico ----------
 // Por padrão segue a preferência do sistema/navegador (prefers-color-scheme);
-// a escolha manual do usuário é salva no localStorage e tem prioridade
-// (a leitura inicial já acontece antes do CSS carregar, num script inline
-// no <head>, para não piscar o tema errado ao abrir o app). O mesmo botão
-// cicla entre os 3 estados: claro → escuro → alto contraste → claro...
+// a escolha manual do usuário é salva no localStorage e tem prioridade (a
+// leitura inicial já acontece antes do CSS carregar, num script inline no
+// <head>, para não piscar o tema errado ao abrir o app). O botão do
+// cabeçalho abre um menu com os 4 temas nomeados e o atual já marcado —
+// mesma interação no desktop (clique) e no celular (toque), sem depender
+// de hover pra saber o tema atual nem os demais disponíveis.
 const TEMA_STORAGE_KEY = "tema-preferido";
-const CICLO_TEMA = ["light", "dark", "contraste"];
+const CICLO_TEMA = ["light", "dark", "contraste", "daltonico"];
+const NOMES_TEMA = {
+  light: "Claro",
+  dark: "Escuro",
+  contraste: "Alto contraste",
+  daltonico: "Modo para daltônicos",
+};
+const ICONES_TEMA = {
+  light: "☀️",
+  dark: "🌙",
+  contraste: "◐",
+  daltonico: "🎨",
+};
 
 function temaEfetivo() {
   const salvo = document.documentElement.getAttribute("data-theme");
@@ -694,29 +727,93 @@ function atualizarBotaoTema() {
   if (!btn) return;
   const icone = btn.querySelector(".btn-tema-icone");
   const atual = temaEfetivo();
-  // Botão compacto, só com ícone — o aria-label descreve a ação (o que vai
-  // acontecer ao tocar), para quem usa leitor de tela.
-  if (atual === "light") {
-    icone.textContent = "🌙";
-    btn.setAttribute("aria-label", "Ativar tema escuro");
-  } else if (atual === "dark") {
-    icone.textContent = "◐";
-    btn.setAttribute("aria-label", "Ativar alto contraste");
-  } else {
-    icone.textContent = "☀️";
-    btn.setAttribute("aria-label", "Ativar tema claro");
-  }
+  // O ícone do botão reflete o tema ATUAL (não mais "o que vai acontecer
+  // ao tocar" — agora o toque abre um menu com todas as opções, então não
+  // há mais um único "próximo" fixo). Tooltip nativo (desktop) e
+  // aria-label (leitor de tela) reforçam o mesmo nome por extenso.
+  icone.textContent = ICONES_TEMA[atual];
+  btn.title = `Tema atual: ${NOMES_TEMA[atual]}`;
+  btn.setAttribute("aria-label", `Escolher tema (atual: ${NOMES_TEMA[atual]})`);
+  atualizarMenuTemaAtivo();
 }
 
-function alternarTema() {
+function construirMenuTema() {
+  const menu = document.getElementById("tema-menu");
+  if (!menu) return;
+  menu.innerHTML = CICLO_TEMA.map((tema) => `
+    <button class="tema-menu-item" type="button" role="menuitemradio" data-tema="${tema}">
+      <span class="tema-menu-icone" aria-hidden="true">${ICONES_TEMA[tema]}</span>
+      <span class="tema-menu-nome">${NOMES_TEMA[tema]}</span>
+      <span class="tema-menu-check" aria-hidden="true">✓</span>
+    </button>
+  `).join("");
+  menu.querySelectorAll(".tema-menu-item").forEach((item) => {
+    item.addEventListener("click", () => selecionarTema(item.dataset.tema));
+  });
+}
+
+function atualizarMenuTemaAtivo() {
   const atual = temaEfetivo();
-  const proximo = CICLO_TEMA[(CICLO_TEMA.indexOf(atual) + 1) % CICLO_TEMA.length];
-  document.documentElement.setAttribute("data-theme", proximo);
-  try { localStorage.setItem(TEMA_STORAGE_KEY, proximo); } catch (e) { /* modo privado etc. */ }
-  atualizarBotaoTema();
+  const menu = document.getElementById("tema-menu");
+  if (!menu) return;
+  menu.querySelectorAll(".tema-menu-item").forEach((item) => {
+    const ativo = item.dataset.tema === atual;
+    item.classList.toggle("ativo", ativo);
+    item.setAttribute("aria-checked", ativo ? "true" : "false");
+  });
 }
 
-document.getElementById("btn-tema").addEventListener("click", alternarTema);
+function fecharMenuTemaAoClicarFora(e) {
+  const wrap = document.querySelector(".tema-menu-wrap");
+  if (wrap && !wrap.contains(e.target)) fecharMenuTema();
+}
+
+function fecharMenuTemaAoEsc(e) {
+  if (e.key === "Escape") fecharMenuTema();
+}
+
+function abrirMenuTema() {
+  const menu = document.getElementById("tema-menu");
+  const btn = document.getElementById("btn-tema");
+  if (!menu || !btn) return;
+  atualizarMenuTemaAtivo();
+  menu.hidden = false;
+  btn.setAttribute("aria-expanded", "true");
+  // Registra os listeners de fechar só depois deste clique terminar, senão
+  // o mesmo clique que abriu o menu já dispararia o "fechar ao clicar fora".
+  setTimeout(() => {
+    document.addEventListener("click", fecharMenuTemaAoClicarFora);
+    document.addEventListener("keydown", fecharMenuTemaAoEsc);
+  }, 0);
+}
+
+function fecharMenuTema() {
+  const menu = document.getElementById("tema-menu");
+  const btn = document.getElementById("btn-tema");
+  if (!menu || !btn) return;
+  menu.hidden = true;
+  btn.setAttribute("aria-expanded", "false");
+  document.removeEventListener("click", fecharMenuTemaAoClicarFora);
+  document.removeEventListener("keydown", fecharMenuTemaAoEsc);
+}
+
+function selecionarTema(tema) {
+  if (!CICLO_TEMA.includes(tema)) return;
+  document.documentElement.setAttribute("data-theme", tema);
+  try { localStorage.setItem(TEMA_STORAGE_KEY, tema); } catch (e) { /* modo privado etc. */ }
+  atualizarBotaoTema();
+  fecharMenuTema();
+  mostrarToast(`Tema: ${NOMES_TEMA[tema]}`);
+}
+
+document.getElementById("btn-tema").addEventListener("click", (e) => {
+  e.stopPropagation();
+  const menu = document.getElementById("tema-menu");
+  if (menu.hidden) abrirMenuTema();
+  else fecharMenuTema();
+});
+
+construirMenuTema();
 atualizarBotaoTema();
 
 if (window.matchMedia) {
@@ -982,7 +1079,7 @@ function renderCartaoForm(dadosExistentes) {
 
         <label class="cartao-campo">
           <span class="cartao-label">Contato de emergência — telefone</span>
-          <input class="cartao-input" type="tel" id="cartao-contato-telefone" value="${escapeHtml(d.contatoTelefone || "")}" placeholder="(21) 90000-0000" autocomplete="tel" />
+          <input class="cartao-input" type="tel" id="cartao-contato-telefone" value="${escapeHtml(formatarTelefoneBR(d.contatoTelefone || ""))}" placeholder="(21) 90000-0000" autocomplete="tel" inputmode="numeric" />
         </label>
 
         <div class="cartao-acoes">
@@ -999,6 +1096,11 @@ function renderCartaoForm(dadosExistentes) {
     } else {
       history.back();
     }
+  });
+
+  const inputTelefone = document.getElementById("cartao-contato-telefone");
+  inputTelefone.addEventListener("input", () => {
+    inputTelefone.value = formatarTelefoneBR(inputTelefone.value);
   });
 
   document.getElementById("cartao-form").addEventListener("submit", (e) => {

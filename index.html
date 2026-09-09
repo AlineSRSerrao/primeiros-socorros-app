@@ -26,7 +26,7 @@
   (function () {
     try {
       var tema = localStorage.getItem("tema-preferido");
-      if (tema === "dark" || tema === "light" || tema === "contraste") {
+      if (tema === "dark" || tema === "light" || tema === "contraste" || tema === "daltonico") {
         document.documentElement.setAttribute("data-theme", tema);
       }
     } catch (e) { /* modo privado etc. */ }
@@ -46,9 +46,12 @@
       Primeiros Socorros na Palma da Mão
       <small>Projeto Jovens Talentos · FAPERJ · ETESC</small>
     </div>
-    <button class="btn-tema-compacto" id="btn-tema" type="button" aria-label="Alternar tema claro, escuro ou alto contraste">
-      <span class="btn-tema-icone" aria-hidden="true">🌙</span>
-    </button>
+    <div class="tema-menu-wrap">
+      <button class="btn-tema-compacto" id="btn-tema" type="button" aria-haspopup="true" aria-expanded="false" aria-controls="tema-menu">
+        <span class="btn-tema-icone" aria-hidden="true">🌙</span>
+      </button>
+      <div class="tema-menu" id="tema-menu" role="menu" aria-label="Escolher tema" hidden></div>
+    </div>
   </div>
   <div class="emergency-bar">
     <a href="tel:192"><span class="num">192</span> SAMU</a>

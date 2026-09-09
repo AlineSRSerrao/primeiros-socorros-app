@@ -39,7 +39,7 @@
    (definido via JS, com persistência em localStorage) permite escolha manual
    e sempre tem prioridade sobre a preferência do sistema. */
 @media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
+  :root:not([data-theme="light"]):not([data-theme="contraste"]):not([data-theme="daltonico"]) {
     --bg: #0E1526;
     --ink: #E7EAF2;
     --muted: #9AA4BE;
@@ -117,6 +117,27 @@
   --shadow-sm: none;
   --shadow-md: none;
   --shadow-lg: none;
+}
+
+/* ---------- Modo para daltônicos ----------
+   4º estado do botão de tema (claro → escuro → alto contraste →
+   daltônico → claro...). Mesma aparência do tema claro; só troca os
+   pares verde/vermelho (certo/errado do quiz, blocos de alerta) por
+   azul/laranja — a combinação mais distinguível para os tipos mais
+   comuns de daltonismo (proto/deuteranopia, ~99% dos casos), já que
+   verde e vermelho tendem a ficar praticamente iguais para essas
+   pessoas (confirmado por simulação: a diferença entre as cores
+   originais cai de ~melhor para ~quase idêntica; azul/laranja mantém
+   uma diferença bem maior). Cores calibradas a partir da paleta
+   Okabe-Ito, testada para daltonismo, com contraste de texto
+   verificado (>=4.5:1 em todos os pares de texto). */
+:root[data-theme="daltonico"] {
+  --link-bg: #E3F2FA;
+  --link-border: #0072B2;
+  --link-text: #01579B;
+  --alerta-bg: #FFF1E0;
+  --alerta-border: #D55E00;
+  --alerta-text: #B24700;
 }
 
 * { box-sizing: border-box; }
@@ -235,12 +256,18 @@ header.app-header {
   line-height: 1;
 }
 
-/* Botão de alternância de tema claro/escuro — ícone compacto junto ao
-   título do cabeçalho, sempre acessível em qualquer tela do app, sem
-   ocupar uma linha inteira. */
+/* Botão de alternância de tema — ícone compacto junto ao título do
+   cabeçalho, sempre acessível em qualquer tela do app, sem ocupar uma
+   linha inteira. Ao tocar/clicar abre um menu (.tema-menu) com os 4
+   temas nomeados e o atual já marcado — funciona igual no desktop
+   (mouse) e no celular (toque), sem depender de hover. */
+.tema-menu-wrap {
+  position: relative;
+  margin-left: auto;
+  flex-shrink: 0;
+}
 .btn-tema-compacto {
   flex-shrink: 0;
-  margin-left: auto;
   width: 40px;
   height: 40px;
   display: flex;
@@ -255,6 +282,47 @@ header.app-header {
 .btn-tema-compacto:active { transform: scale(0.94); background: rgba(255,255,255,0.2); }
 .btn-tema-compacto:focus-visible { outline: 2px solid #fff; outline-offset: 1px; }
 .btn-tema-icone { font-size: 1.15rem; line-height: 1; }
+
+.tema-menu {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  min-width: 216px;
+  max-width: calc(100vw - 40px);
+  background: var(--card-bg);
+  border: 1px solid var(--border-strong);
+  border-radius: 14px;
+  box-shadow: var(--shadow-lg);
+  padding: 6px;
+  z-index: 50;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.tema-menu[hidden] { display: none; }
+.tema-menu-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  background: none;
+  border: none;
+  border-radius: 10px;
+  padding: 10px 12px;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--ink);
+  cursor: pointer;
+  text-align: left;
+  min-height: 44px;
+}
+.tema-menu-item:hover { background: var(--painel-bg); }
+.tema-menu-item:focus-visible { outline: 2px solid var(--navy-light); outline-offset: -2px; }
+.tema-menu-item.ativo { background: var(--link-bg); color: var(--accent-text); font-weight: 800; }
+.tema-menu-icone { font-size: 1.05rem; flex-shrink: 0; width: 20px; text-align: center; }
+.tema-menu-nome { flex: 1; min-width: 0; }
+.tema-menu-check { opacity: 0; font-size: 0.9rem; color: var(--accent-text); flex-shrink: 0; }
+.tema-menu-item.ativo .tema-menu-check { opacity: 1; }
 
 /* ---------- Busca ---------- */
 .search-wrap { padding: 16px 20px 4px; }
@@ -327,9 +395,13 @@ main {
 
 /* No tema escuro, o título dos cards da tela inicial fica branco puro
    (em vez do --ink padrão, que é um branco levemente acinzentado) —
-   a descrição continua em --muted, para manter a hierarquia visual. */
+   a descrição continua em --muted, para manter a hierarquia visual.
+   :not([data-theme="contraste"]) é essencial aqui: sem isso, essa regra
+   "vaza" para o alto contraste sempre que o sistema estiver no modo
+   escuro (contraste ≠ light, então o :not([data-theme="light"]) sozinho
+   também seria verdadeiro), deixando o título branco sobre fundo branco. */
 @media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) .card-titulo { color: #FFFFFF; }
+  :root:not([data-theme="light"]):not([data-theme="contraste"]):not([data-theme="daltonico"]) .card-titulo { color: #FFFFFF; }
 }
 :root[data-theme="dark"] .card-titulo { color: #FFFFFF; }
 
