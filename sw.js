@@ -1,6 +1,6 @@
 // Service Worker — cache offline-first.
 // Em uma emergência a conexão pode falhar; o app precisa abrir mesmo assim.
-const CACHE_NAME = "primeiros-socorros-v39";
+const CACHE_NAME = "primeiros-socorros-v41";
 const ASSETS = [
   "./",
   "./index.html",

@@ -89,6 +89,36 @@
   --shadow-lg: 0 10px 28px rgba(0,0,0,0.45);
 }
 
+/* ---------- Alto contraste ----------
+   3º estado do botão de tema (claro → escuro → alto contraste → claro...).
+   Mantém as cores da marca (navy/vermelho), mas com texto e bordas em preto
+   puro sobre fundo branco e sem sombras suaves — só bordas sólidas marcam
+   os limites de cada bloco, para máxima legibilidade. */
+:root[data-theme="contraste"] {
+  --bg: #FFFFFF;
+  --ink: #000000;
+  --muted: #2E2E2E;
+  --card-bg: #FFFFFF;
+  --accent-text: var(--navy);
+  --border: #000000;
+  --border-strong: #000000;
+  --input-bg: #FFFFFF;
+  --nav-bg: #FFFFFF;
+  --nav-border: #000000;
+  --alerta-bg: #FFECEC;
+  --alerta-border: #000000;
+  --alerta-text: #8B0000;
+  --link-bg: #EAF7E9;
+  --link-border: #000000;
+  --link-text: #145A20;
+  --painel-bg: #F0F0F0;
+  --painel-border: #000000;
+  --destaque-bg: #FFEB3B;
+  --shadow-sm: none;
+  --shadow-md: none;
+  --shadow-lg: none;
+}
+
 * { box-sizing: border-box; }
 
 html { -webkit-text-size-adjust: 100%; }
@@ -665,6 +695,96 @@ main {
 }
 .quiz-resultado-texto { margin: 0 0 16px; color: var(--muted); font-size: 0.92rem; line-height: 1.4; }
 
+/* ---------- Cartão de emergência pessoal (dados salvos só no aparelho) ---------- */
+.cartao-aviso-privacidade {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  background: var(--painel-bg);
+  border: 1px solid var(--painel-border);
+  border-radius: var(--radius);
+  padding: 12px 14px;
+  margin-bottom: 16px;
+}
+.cartao-aviso-icone { font-size: 1.1rem; flex-shrink: 0; line-height: 1.3; }
+.cartao-aviso-privacidade p { margin: 0; font-size: 0.82rem; color: var(--muted); line-height: 1.4; }
+.cartao-aviso-privacidade strong { color: var(--ink); }
+
+.cartao-btn-primario {
+  width: 100%;
+  background: var(--navy);
+  color: #fff;
+  border: none;
+  padding: 14px 18px;
+  border-radius: var(--radius);
+  font-weight: 700;
+  font-size: 0.95rem;
+  cursor: pointer;
+  min-height: 48px;
+  box-shadow: var(--shadow-sm);
+  transition: transform .1s ease;
+}
+.cartao-btn-primario:active { transform: scale(0.98); }
+.cartao-btn-primario:focus-visible { outline: 2px solid var(--navy-light); outline-offset: 2px; }
+
+.cartao-btn-perigo {
+  width: 100%;
+  background: none;
+  border: 1px solid var(--alerta-border);
+  color: var(--alerta-text);
+  padding: 13px 18px;
+  border-radius: var(--radius);
+  font-weight: 700;
+  font-size: 0.9rem;
+  cursor: pointer;
+  min-height: 46px;
+}
+.cartao-btn-perigo:active { transform: scale(0.98); }
+.cartao-btn-perigo:focus-visible { outline: 2px solid var(--red-dark); outline-offset: 2px; }
+
+.cartao-acoes { display: flex; flex-direction: column; gap: 10px; margin-top: 14px; }
+
+.cartao-form { display: flex; flex-direction: column; gap: 14px; }
+.cartao-campo { display: flex; flex-direction: column; gap: 6px; }
+.cartao-label { font-size: 0.8rem; font-weight: 700; color: var(--muted); }
+.cartao-input {
+  width: 100%;
+  background: var(--input-bg);
+  border: 1px solid var(--border-strong);
+  color: var(--ink);
+  border-radius: 12px;
+  padding: 11px 13px;
+  font-size: 0.92rem;
+  font-family: inherit;
+}
+.cartao-input:focus-visible { outline: 2px solid var(--navy-light); outline-offset: 1px; }
+.cartao-textarea { min-height: 64px; resize: vertical; line-height: 1.4; }
+select.cartao-input {
+  appearance: none;
+  -webkit-appearance: none;
+  background-image: linear-gradient(45deg, transparent 50%, var(--muted) 50%), linear-gradient(135deg, var(--muted) 50%, transparent 50%);
+  background-position: calc(100% - 18px) center, calc(100% - 13px) center;
+  background-size: 5px 5px, 5px 5px;
+  background-repeat: no-repeat;
+  padding-right: 30px;
+}
+
+.cartao-view-nome { margin: 0 0 12px; font-size: 1.1rem; color: var(--accent-text); }
+.cartao-view-item { padding: 10px 0; border-bottom: 1px solid var(--border); }
+.cartao-view-item:last-child { border-bottom: none; }
+.cartao-view-label {
+  display: block;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--muted);
+  margin-bottom: 3px;
+}
+.cartao-view-valor { display: block; font-size: 0.94rem; color: var(--ink); line-height: 1.4; white-space: pre-wrap; }
+.cartao-view-valor a { color: var(--accent-text); font-weight: 700; text-decoration: none; }
+.cartao-view-vazio { margin: 4px 0 0; font-size: 0.88rem; color: var(--muted); }
+
 /* ---------- Comparativo SAMU x Bombeiros ---------- */
 .comparativo-grid {
   display: grid;
@@ -894,6 +1014,37 @@ main {
 @media (max-width: 400px) {
   .btn-topo-prefixo { display: none; }
   .btn-topo { padding: 10px 14px; }
+}
+
+/* ---------- Botão flutuante 'Instalar app' (beforeinstallprompt) ---------- */
+.btn-instalar {
+  position: fixed;
+  left: 50%;
+  bottom: calc(var(--nav-height) + 16px + env(safe-area-inset-bottom));
+  transform: translateX(-50%);
+  z-index: 26;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--navy);
+  color: #fff;
+  border: none;
+  border-radius: 999px;
+  padding: 12px 20px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  min-height: 44px;
+  box-shadow: var(--shadow-lg);
+  cursor: pointer;
+  animation: subir-instalar .3s ease both;
+}
+.btn-instalar[hidden] { display: none; }
+.btn-instalar:active { transform: translateX(-50%) scale(0.96); }
+.btn-instalar-icone { font-size: 1rem; }
+.btn-instalar:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+@keyframes subir-instalar {
+  from { opacity: 0; transform: translateX(-50%) translateY(10px); }
+  to { opacity: 1; transform: translateX(-50%) translateY(0); }
 }
 
 /* ---------- Navegação inferior fixa (padrão de app mobile) ---------- */

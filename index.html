@@ -6,13 +6,27 @@
 <title>Primeiros Socorros na Palma da Mão</title>
 <meta name="description" content="Guia educativo de primeiros socorros para o público leigo." />
 <meta name="theme-color" content="#0B1F44" />
+
+<!-- Open Graph / Facebook -->
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://alinesrserrao.github.io/primeiros-socorros-app/" />
+<meta property="og:title" content="Primeiros Socorros na Palma da Mão" />
+<meta property="og:description" content="Guia educativo de primeiros socorros para o público leigo." />
+<meta property="og:image" content="https://alinesrserrao.github.io/primeiros-socorros-app/img/og-primeiros-socorros.jpg" />
+
+<!-- X (Twitter) -->
+<meta property="twitter:card" content="summary_large_image" />
+<meta property="twitter:url" content="https://alinesrserrao.github.io/primeiros-socorros-app/" />
+<meta property="twitter:title" content="Primeiros Socorros na Palma da Mão" />
+<meta property="twitter:description" content="Guia educativo de primeiros socorros para o público leigo." />
+<meta property="twitter:image" content="https://alinesrserrao.github.io/primeiros-socorros-app/img/og-primeiros-socorros.jpg" />
 <script>
   // Aplica o tema salvo (se houver) antes do CSS renderizar, para evitar
   // um "flash" do tema errado ao abrir o app.
   (function () {
     try {
       var tema = localStorage.getItem("tema-preferido");
-      if (tema === "dark" || tema === "light") {
+      if (tema === "dark" || tema === "light" || tema === "contraste") {
         document.documentElement.setAttribute("data-theme", tema);
       }
     } catch (e) { /* modo privado etc. */ }
@@ -32,7 +46,7 @@
       Primeiros Socorros na Palma da Mão
       <small>Projeto Jovens Talentos · FAPERJ · ETESC</small>
     </div>
-    <button class="btn-tema-compacto" id="btn-tema" type="button" aria-label="Alternar tema claro ou escuro">
+    <button class="btn-tema-compacto" id="btn-tema" type="button" aria-label="Alternar tema claro, escuro ou alto contraste">
       <span class="btn-tema-icone" aria-hidden="true">🌙</span>
     </button>
   </div>
@@ -52,7 +66,7 @@
 <main id="app"></main>
 
 <footer class="app-footer">
-  <img class="footer-assinatura" src="img/assinatura-faetec.png" alt="FAETEC — Secretaria de Ciência, Tecnologia e Inovação — Governo do Estado do Rio de Janeiro" loading="lazy" />
+  <img class="footer-assinatura" src="img/assinatura-faetec.png" alt="FAETEC — Secretaria de Ciência, Tecnologia e Inovação — Governo do Estado do Rio de Janeiro" loading="lazy" width="1200" height="147" />
   <p class="footer-copy">Projeto Jovens Talentos · FAPERJ — material educativo, não substitui atendimento médico.</p>
 </footer>
 
@@ -73,6 +87,11 @@
   <span class="btn-topo-texto"><span class="btn-topo-prefixo">Voltar ao </span>Topo</span>
 </button>
 
+<button id="btn-instalar" class="btn-instalar" type="button" hidden>
+  <span class="btn-instalar-icone" aria-hidden="true">📲</span>
+  <span>Instalar app</span>
+</button>
+
 <nav class="bottom-nav" aria-label="Navegação principal">
   <button class="bottom-nav-btn ativo" data-route="inicio" aria-label="Início">
     <span class="bottom-nav-icone" aria-hidden="true">🏠</span>
@@ -89,6 +108,10 @@
   <button class="bottom-nav-btn" data-route="sobre" aria-label="Sobre o projeto">
     <span class="bottom-nav-icone" aria-hidden="true">ℹ️</span>
     <span>Sobre</span>
+  </button>
+  <button class="bottom-nav-btn" data-route="cartao" aria-label="Meus dados de emergência">
+    <span class="bottom-nav-icone" aria-hidden="true">🪪</span>
+    <span>Meus Dados</span>
   </button>
 </nav>
 

@@ -18,6 +18,17 @@ const app = document.getElementById("app");
 const buscaInput = document.getElementById("busca");
 const toast = document.getElementById("toast");
 
+// Usado para exibir com segurança dados digitados pela própria pessoa
+// (cartão de emergência) — evita que HTML digitado quebre a página.
+function escapeHtml(str) {
+  return String(str)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
+
 // ---------- Busca contextual: filtra na Início, destaca (estilo Ctrl+F) nas demais páginas ----------
 let contextoBusca = "inicio";
 
@@ -663,16 +674,18 @@ document.getElementById("btn-samu-bombeiros").addEventListener("click", () => {
   irComTransicao(renderSamuBombeiros);
 });
 
-// ---------- Tema claro/escuro ----------
+// ---------- Tema claro/escuro/alto contraste ----------
 // Por padrão segue a preferência do sistema/navegador (prefers-color-scheme);
 // a escolha manual do usuário é salva no localStorage e tem prioridade
 // (a leitura inicial já acontece antes do CSS carregar, num script inline
-// no <head>, para não piscar o tema errado ao abrir o app).
+// no <head>, para não piscar o tema errado ao abrir o app). O mesmo botão
+// cicla entre os 3 estados: claro → escuro → alto contraste → claro...
 const TEMA_STORAGE_KEY = "tema-preferido";
+const CICLO_TEMA = ["light", "dark", "contraste"];
 
 function temaEfetivo() {
   const salvo = document.documentElement.getAttribute("data-theme");
-  if (salvo === "dark" || salvo === "light") return salvo;
+  if (CICLO_TEMA.includes(salvo)) return salvo;
   return window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
 }
 
@@ -680,21 +693,26 @@ function atualizarBotaoTema() {
   const btn = document.getElementById("btn-tema");
   if (!btn) return;
   const icone = btn.querySelector(".btn-tema-icone");
+  const atual = temaEfetivo();
   // Botão compacto, só com ícone — o aria-label descreve a ação (o que vai
   // acontecer ao tocar), para quem usa leitor de tela.
-  if (temaEfetivo() === "dark") {
-    icone.textContent = "☀️";
-    btn.setAttribute("aria-label", "Ativar tema claro");
-  } else {
+  if (atual === "light") {
     icone.textContent = "🌙";
     btn.setAttribute("aria-label", "Ativar tema escuro");
+  } else if (atual === "dark") {
+    icone.textContent = "◐";
+    btn.setAttribute("aria-label", "Ativar alto contraste");
+  } else {
+    icone.textContent = "☀️";
+    btn.setAttribute("aria-label", "Ativar tema claro");
   }
 }
 
 function alternarTema() {
-  const novo = temaEfetivo() === "dark" ? "light" : "dark";
-  document.documentElement.setAttribute("data-theme", novo);
-  try { localStorage.setItem(TEMA_STORAGE_KEY, novo); } catch (e) { /* modo privado etc. */ }
+  const atual = temaEfetivo();
+  const proximo = CICLO_TEMA[(CICLO_TEMA.indexOf(atual) + 1) % CICLO_TEMA.length];
+  document.documentElement.setAttribute("data-theme", proximo);
+  try { localStorage.setItem(TEMA_STORAGE_KEY, proximo); } catch (e) { /* modo privado etc. */ }
   atualizarBotaoTema();
 }
 
@@ -856,6 +874,212 @@ function renderQuizResultado() {
   });
 }
 
+// ---------- Cartão de emergência pessoal (dados salvos só no aparelho, sem servidor) ----------
+const CARTAO_STORAGE_KEY = "cartao-emergencia";
+const CARTAO_TIPOS_SANGUINEOS = ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-", "Não sei"];
+
+function carregarCartao() {
+  try {
+    const bruto = localStorage.getItem(CARTAO_STORAGE_KEY);
+    return bruto ? JSON.parse(bruto) : null;
+  } catch (e) {
+    return null;
+  }
+}
+
+function salvarCartao(dados) {
+  try {
+    localStorage.setItem(CARTAO_STORAGE_KEY, JSON.stringify(dados));
+    return true;
+  } catch (e) {
+    return false;
+  }
+}
+
+function apagarCartaoStorage() {
+  try {
+    localStorage.removeItem(CARTAO_STORAGE_KEY);
+  } catch (e) { /* modo privado etc. */ }
+}
+
+function avisoPrivacidadeCartaoHtml() {
+  return `
+    <div class="cartao-aviso-privacidade">
+      <span class="cartao-aviso-icone" aria-hidden="true">🔒</span>
+      <p>Essas informações ficam salvas <strong>somente neste aparelho</strong>. Elas não são enviadas para nenhum servidor nem saem do seu celular.</p>
+    </div>
+  `;
+}
+
+function renderCartao() {
+  atualizarContextoBusca("cartao");
+  atualizarNavAtiva("cartao");
+  window.scrollTo(0, 0);
+  const dados = carregarCartao();
+  if (dados) {
+    renderCartaoView(dados);
+  } else {
+    renderCartaoIntro();
+  }
+}
+
+function renderCartaoIntro() {
+  window.scrollTo(0, 0);
+  app.innerHTML = `
+    <div class="tela-pagina tela-cartao">
+      <h1 class="pagina-titulo">Cartão de emergência</h1>
+      <p class="pagina-subtitulo">Guarde informações importantes — alergias, medicamentos, condições de saúde e um contato de emergência — para consultar rapidamente numa emergência real ou mostrar a quem for te socorrer.</p>
+      ${avisoPrivacidadeCartaoHtml()}
+      <button class="cartao-btn-primario" id="cartao-btn-preencher" type="button">Preencher meu cartão</button>
+    </div>
+  `;
+  document.getElementById("cartao-btn-preencher").addEventListener("click", () => {
+    irComTransicao(() => renderCartaoForm(null));
+  });
+}
+
+function renderCartaoForm(dadosExistentes) {
+  window.scrollTo(0, 0);
+  const d = dadosExistentes || {};
+  app.innerHTML = `
+    <div class="tela-pagina tela-cartao">
+      <button class="voltar-btn" id="cartao-form-voltar">← Voltar</button>
+      <h1 class="pagina-titulo">${dadosExistentes ? "Editar cartão" : "Preencher cartão"}</h1>
+      ${avisoPrivacidadeCartaoHtml()}
+      <form class="cartao-form bloco" id="cartao-form">
+        <label class="cartao-campo">
+          <span class="cartao-label">Nome completo</span>
+          <input class="cartao-input" type="text" id="cartao-nome" value="${escapeHtml(d.nome || "")}" placeholder="Seu nome" autocomplete="name" />
+        </label>
+
+        <label class="cartao-campo">
+          <span class="cartao-label">Tipo sanguíneo</span>
+          <select class="cartao-input" id="cartao-tipo-sanguineo">
+            <option value="">Não informado</option>
+            ${CARTAO_TIPOS_SANGUINEOS.map((t) => `<option value="${t}"${d.tipoSanguineo === t ? " selected" : ""}>${t}</option>`).join("")}
+          </select>
+        </label>
+
+        <label class="cartao-campo">
+          <span class="cartao-label">Alergias</span>
+          <textarea class="cartao-input cartao-textarea" id="cartao-alergias" placeholder="Ex: dipirona, picada de abelha...">${escapeHtml(d.alergias || "")}</textarea>
+        </label>
+
+        <label class="cartao-campo">
+          <span class="cartao-label">Medicamentos em uso</span>
+          <textarea class="cartao-input cartao-textarea" id="cartao-medicamentos" placeholder="Ex: losartana 50mg, 1x ao dia">${escapeHtml(d.medicamentos || "")}</textarea>
+        </label>
+
+        <label class="cartao-campo">
+          <span class="cartao-label">Condições de saúde relevantes</span>
+          <textarea class="cartao-input cartao-textarea" id="cartao-condicoes" placeholder="Ex: asma, epilepsia, diabetes...">${escapeHtml(d.condicoes || "")}</textarea>
+        </label>
+
+        <label class="cartao-campo">
+          <span class="cartao-label">Contato de emergência — nome</span>
+          <input class="cartao-input" type="text" id="cartao-contato-nome" value="${escapeHtml(d.contatoNome || "")}" placeholder="Nome de quem avisar" autocomplete="off" />
+        </label>
+
+        <label class="cartao-campo">
+          <span class="cartao-label">Contato de emergência — telefone</span>
+          <input class="cartao-input" type="tel" id="cartao-contato-telefone" value="${escapeHtml(d.contatoTelefone || "")}" placeholder="(21) 90000-0000" autocomplete="tel" />
+        </label>
+
+        <div class="cartao-acoes">
+          <button class="cartao-btn-primario" type="submit">Salvar</button>
+          ${dadosExistentes ? `<button class="cartao-btn-perigo" type="button" id="cartao-btn-apagar">Apagar meus dados</button>` : ""}
+        </div>
+      </form>
+    </div>
+  `;
+
+  document.getElementById("cartao-form-voltar").addEventListener("click", () => {
+    if (dadosExistentes) {
+      irComTransicao(() => renderCartaoView(dadosExistentes));
+    } else {
+      history.back();
+    }
+  });
+
+  document.getElementById("cartao-form").addEventListener("submit", (e) => {
+    e.preventDefault();
+    const novosDados = {
+      nome: document.getElementById("cartao-nome").value.trim(),
+      tipoSanguineo: document.getElementById("cartao-tipo-sanguineo").value,
+      alergias: document.getElementById("cartao-alergias").value.trim(),
+      medicamentos: document.getElementById("cartao-medicamentos").value.trim(),
+      condicoes: document.getElementById("cartao-condicoes").value.trim(),
+      contatoNome: document.getElementById("cartao-contato-nome").value.trim(),
+      contatoTelefone: document.getElementById("cartao-contato-telefone").value.trim(),
+    };
+    if (salvarCartao(novosDados)) {
+      mostrarToast("Cartão salvo neste aparelho.");
+      irComTransicao(() => renderCartaoView(novosDados));
+    } else {
+      mostrarToast("Não foi possível salvar. Verifique o armazenamento do navegador.");
+    }
+  });
+
+  const btnApagar = document.getElementById("cartao-btn-apagar");
+  if (btnApagar) {
+    btnApagar.addEventListener("click", () => {
+      if (confirm("Apagar todos os dados do seu cartão de emergência? Essa ação não pode ser desfeita.")) {
+        apagarCartaoStorage();
+        mostrarToast("Dados do cartão apagados.");
+        irComTransicao(renderCartaoIntro);
+      }
+    });
+  }
+}
+
+function renderCartaoView(dados) {
+  window.scrollTo(0, 0);
+  const linha = (rotulo, valor) => valor
+    ? `<div class="cartao-view-item"><span class="cartao-view-label">${rotulo}</span><span class="cartao-view-valor">${escapeHtml(valor)}</span></div>`
+    : "";
+
+  const temContato = dados.contatoNome || dados.contatoTelefone;
+  const contatoHtml = temContato
+    ? `<div class="cartao-view-item">
+         <span class="cartao-view-label">Contato de emergência</span>
+         <span class="cartao-view-valor">${escapeHtml(dados.contatoNome || "")}${dados.contatoNome && dados.contatoTelefone ? " — " : ""}${dados.contatoTelefone ? `<a href="tel:${escapeHtml(dados.contatoTelefone.replace(/\D/g, ""))}">${escapeHtml(dados.contatoTelefone)}</a>` : ""}</span>
+       </div>`
+    : "";
+
+  const semDados = !dados.nome && !dados.tipoSanguineo && !dados.alergias && !dados.medicamentos && !dados.condicoes && !temContato;
+
+  app.innerHTML = `
+    <div class="tela-pagina tela-cartao">
+      <h1 class="pagina-titulo">Cartão de emergência</h1>
+      ${avisoPrivacidadeCartaoHtml()}
+      <div class="bloco cartao-view">
+        ${dados.nome ? `<h2 class="cartao-view-nome">${escapeHtml(dados.nome)}</h2>` : ""}
+        ${linha("Tipo sanguíneo", dados.tipoSanguineo)}
+        ${linha("Alergias", dados.alergias)}
+        ${linha("Medicamentos em uso", dados.medicamentos)}
+        ${linha("Condições de saúde relevantes", dados.condicoes)}
+        ${contatoHtml}
+        ${semDados ? `<p class="cartao-view-vazio">Nenhuma informação preenchida ainda.</p>` : ""}
+      </div>
+      <div class="cartao-acoes">
+        <button class="cartao-btn-primario" id="cartao-btn-editar" type="button">Editar</button>
+        <button class="cartao-btn-perigo" id="cartao-btn-apagar-view" type="button">Apagar meus dados</button>
+      </div>
+    </div>
+  `;
+
+  document.getElementById("cartao-btn-editar").addEventListener("click", () => {
+    irComTransicao(() => renderCartaoForm(dados));
+  });
+  document.getElementById("cartao-btn-apagar-view").addEventListener("click", () => {
+    if (confirm("Apagar todos os dados do seu cartão de emergência? Essa ação não pode ser desfeita.")) {
+      apagarCartaoStorage();
+      mostrarToast("Dados do cartão apagados.");
+      irComTransicao(renderCartaoIntro);
+    }
+  });
+}
+
 // ---------- Rodapé de navegação fixo ----------
 function atualizarNavAtiva(routeName) {
   document.querySelectorAll(".bottom-nav-btn").forEach((btn) => {
@@ -899,6 +1123,7 @@ function rotearHash() {
   if (hash === "estudos") { renderEstudos(); return; }
   if (hash === "samu-bombeiros") { renderSamuBombeiros(); return; }
   if (hash === "quiz") { renderQuiz(); return; }
+  if (hash === "cartao") { renderCartao(); return; }
 
   const [moduloId, subId] = hash.split("/");
   if (moduloId && MODULOS.some((m) => m.id === moduloId)) {
@@ -971,9 +1196,33 @@ if ("serviceWorker" in navigator) {
 }
 
 // ---- Prompt de instalação (Adicionar à tela inicial) ----
+// O navegador só mostra a caixa nativa de instalação se prompt() for chamado
+// dentro de um gesto do usuário — por isso guardamos o evento e mostramos um
+// botão próprio; preventDefault() sozinho (sem chamar prompt() depois) faz o
+// navegador avisar no console que o banner não foi exibido.
 let deferredPrompt;
+const btnInstalar = document.getElementById("btn-instalar");
+
 window.addEventListener("beforeinstallprompt", (e) => {
   e.preventDefault();
   deferredPrompt = e;
-  mostrarToast("Toque para instalar o app no seu celular ↓");
+  if (btnInstalar) btnInstalar.hidden = false;
+});
+
+if (btnInstalar) {
+  btnInstalar.addEventListener("click", async () => {
+    if (!deferredPrompt) return;
+    btnInstalar.hidden = true;
+    deferredPrompt.prompt();
+    try {
+      await deferredPrompt.userChoice;
+    } catch (e) { /* navegador sem suporte a userChoice */ }
+    deferredPrompt = null;
+  });
+}
+
+window.addEventListener("appinstalled", () => {
+  deferredPrompt = null;
+  if (btnInstalar) btnInstalar.hidden = true;
+  mostrarToast("App instalado! Você já pode abri-lo pela tela inicial.");
 });
