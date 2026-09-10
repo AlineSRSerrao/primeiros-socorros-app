@@ -35,18 +35,12 @@ const PAGINA_SOBRE = {
   ]
 };
 
-// NOTA PARA REVISÃO: divisão de atribuições entre SAMU e Bombeiros baseada em
-// conhecimento público geral (SAMU = atendimento médico de urgência; Corpo de
-// Bombeiros = resgate, salvamento e emergências ambientais/estruturais).
-// Não é uma fonte oficial verificada — confirme os itens, principalmente os
-// mais específicos, com os canais oficiais do SAMU-RJ e do CBMERJ antes de
-// publicar, já que o protocolo pode variar entre municípios.
 const PAGINA_SAMU_BOMBEIROS = {
   titulo: "SAMU ou Bombeiros?",
   subtitulo: "Em caso de dúvida na hora de ligar, veja o que cada serviço atende. Se não tiver certeza, ligue para qualquer um dos dois — o atendente orienta e aciona o serviço correto.",
   samu: {
     titulo: "SAMU — 192",
-    icone: "🚑",
+    icone: '<img src="img/icones/icone-samu.webp" alt="" class="icone-comparativo-titulo-img">',
     descricao: "Emergências de saúde: quando a vida corre risco por um problema médico.",
     itens: [
       "Mal súbito: suspeita de infarto ou AVC",
@@ -62,7 +56,7 @@ const PAGINA_SAMU_BOMBEIROS = {
   },
   bombeiros: {
     titulo: "Corpo de Bombeiros — 193",
-    icone: "🚒",
+    icone: '<img src="img/icones/icone-bombeiros.webp" alt="" class="icone-comparativo-titulo-img">',
     descricao: "Resgate, salvamento e situações de risco físico ou ambiental.",
     itens: [
       "Incêndios (residenciais, veiculares, florestais)",

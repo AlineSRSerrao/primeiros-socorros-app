@@ -3,11 +3,6 @@
 // do app (sinais / passos / o que não fazer) — não foi extraída de nenhuma
 // fonte externa nova.
 //
-// NOTA PARA REVISÃO CLÍNICA: como todo o conteúdo dos módulos, vale a pena
-// a Samille revisar o enunciado e a explicação de cada pergunta antes da
-// apresentação, para garantir que a forma como foi resumida continua clara
-// e clinicamente precisa.
-//
 // Cada tentativa do quiz sorteia um subconjunto aleatório destas perguntas
 // (ver QUIZ_QTD_PERGUNTAS em app.js).
 

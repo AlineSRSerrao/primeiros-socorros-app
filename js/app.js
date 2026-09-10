@@ -160,9 +160,9 @@ function ativarAccordions(escopo) {
 function blocoLinkExterno(link) {
   return `
     <a class="link-externo" href="${link.url}" target="_blank" rel="noopener noreferrer">
-      <span class="link-externo-icone" aria-hidden="true">🔗</span>
+      <span class="link-externo-icone" aria-hidden="true"><img src="img/icones/icone-corrente.webp" alt="" class="icone-link-img"></span>
       <span>${link.texto}</span>
-      <span class="link-externo-seta" aria-hidden="true">↗</span>
+      <span class="link-externo-seta" aria-hidden="true"><img src="img/icones/icone-seta-externa.webp" alt="" class="icone-link-img"></span>
     </a>
   `;
 }
@@ -173,10 +173,13 @@ function ytEmbedUrl(url) {
   return `https://www.youtube.com/embed/${id}`;
 }
 
+const ICONE_PLAY = '<img src="img/icones/icone-play.webp" alt="" class="icone-acordeon-img">';
+const ICONE_ILUSTRACAO = '<img src="img/icones/nav-ilustracoes.webp" alt="" class="icone-acordeon-img">';
+
 function blocoAccordionVideo({ titulo, tituloCompleto, url }) {
   return blocoAccordion({
     titulo,
-    icone: "▶️",
+    icone: ICONE_PLAY,
     conteudoHtml: `
       <div class="video-embed">
         <iframe width="560" height="315" src="${ytEmbedUrl(url)}" title="${tituloCompleto || titulo}"
@@ -203,7 +206,7 @@ function blocoConteudo(dados) {
 
   acordeoes.push(blocoAccordion({
     titulo: "Ver ilustração",
-    icone: "🖼️",
+    icone: ICONE_ILUSTRACAO,
     conteudoHtml: dados.imagem
       ? `<img class="img-ampliavel" src="${dados.imagem}" alt="Ilustração do procedimento: ${dados.nome || dados.titulo || ""}" loading="lazy" style="cursor:zoom-in;${dados.imagemLargura ? ` width:${dados.imagemLargura}; margin:0 auto;` : ""}" />`
       : `<p class="em-breve">Em breve adicionaremos uma ilustração para este tópico. Estamos atualizando o conteúdo — volte em breve!</p>`
@@ -215,7 +218,7 @@ function blocoConteudo(dados) {
     // Vídeo ainda não definido — aviso reutilizável em todas as páginas.
     acordeoes.push(blocoAccordion({
       titulo: "Assistir vídeo explicativo",
-      icone: "▶️",
+      icone: ICONE_PLAY,
       conteudoHtml: `<p class="em-breve">Em breve adicionaremos um vídeo explicativo para este tópico. Estamos atualizando o conteúdo — volte em breve!</p>`
     }));
   }
@@ -276,7 +279,7 @@ function renderLista(filtro = "") {
     card.className = "card-modulo";
     card.setAttribute("aria-label", `Abrir módulo: ${m.titulo}`);
     card.innerHTML = `
-      <div class="card-icone" style="background:${m.cor}22;">${m.icone}</div>
+      <div class="card-icone" style="background:${m.cor}22; color:${m.cor};">${m.icone}</div>
       <div class="card-titulo">${m.titulo}</div>
       <div class="card-resumo">${m.resumo}</div>
     `;
@@ -318,7 +321,7 @@ function pararLeitura() {
   utteranceAtual = null;
   document.querySelectorAll(".tts-btn.ativo").forEach((b) => {
     b.classList.remove("ativo");
-    b.textContent = "🔊 Ativar leitura por voz";
+    b.innerHTML = TEXTO_BTN_LEITURA;
   });
 }
 
@@ -332,7 +335,7 @@ function falar(texto, btn) {
   utter.onerror = () => { if (utter === utteranceAtual) pararLeitura(); };
   utteranceAtual = utter;
   btn.classList.add("ativo");
-  btn.textContent = "⏹️ Parar leitura";
+  btn.innerHTML = TEXTO_BTN_PARAR_LEITURA;
   window.speechSynthesis.speak(utter);
 }
 
@@ -350,9 +353,12 @@ function alternarLeitura(texto, btn) {
   falar(texto, btn);
 }
 
+const TEXTO_BTN_LEITURA = '<img src="img/icones/icone-alto-falante.webp" alt="" class="icone-tts-img"> Ativar leitura por voz';
+const TEXTO_BTN_PARAR_LEITURA = '<img src="img/icones/icone-stop.webp" alt="" class="icone-tts-img"> Parar leitura';
+
 function blocoBotaoLeitura() {
   return `
-    <button class="tts-btn" id="tts-btn" type="button">🔊 Ativar leitura por voz</button>
+    <button class="tts-btn" id="tts-btn" type="button">${TEXTO_BTN_LEITURA}</button>
     <div class="velocidade-fala" role="group" aria-label="Velocidade da leitura">
       <span class="velocidade-label">Velocidade:</span>
       ${VELOCIDADES_FALA.map((v) => `
@@ -408,6 +414,9 @@ function tocarBipMetronomo() {
   osc.stop(ctx.currentTime + 0.1);
 }
 
+const ICONE_METRONOMO_INICIAR = '<img src="img/icones/icone-play2.webp" alt="" class="icone-metronomo-img"> Iniciar ritmo';
+const ICONE_METRONOMO_PARAR = '<img src="img/icones/icone-pause.webp" alt="" class="icone-metronomo-img"> Parar ritmo';
+
 function pulsarMetronomo() {
   const pulso = document.getElementById("metronomo-pulso");
   if (!pulso) return;
@@ -425,7 +434,7 @@ function iniciarMetronomo() {
     pulsarMetronomo();
   }, 60000 / METRONOMO_BPM);
   if (btn) {
-    btn.textContent = "⏸️ Parar ritmo";
+    btn.innerHTML = ICONE_METRONOMO_PARAR;
     btn.classList.add("ativo");
   }
 }
@@ -437,9 +446,49 @@ function pararMetronomo() {
   }
   const btn = document.getElementById("metronomo-btn");
   if (btn) {
-    btn.textContent = "▶️ Iniciar ritmo";
+    btn.innerHTML = ICONE_METRONOMO_INICIAR;
     btn.classList.remove("ativo");
   }
+}
+
+function blocoFacaAgora192(texto) {
+  return `
+    <div class="bloco-faca-agora">
+      <div class="faca-agora-texto">
+        <h3>Faça agora</h3>
+        <p>${texto}</p>
+      </div>
+      <a class="faca-agora-btn" href="tel:192">Ligar 192</a>
+    </div>
+  `;
+}
+
+// Textos do bloco "Faça agora" por módulo (só nos módulos com um sinal claro
+// de emergência que justifique o botão de discagem direta).
+const TEXTOS_FACA_AGORA_192 = {
+  engasgo: "Se a pessoa não consegue respirar, falar ou tossir, ou se perdeu a consciência, ligue 192 imediatamente.",
+  rcp: "Se a pessoa não responde e não está respirando normalmente, ligue 192 agora — peça para alguém ligar enquanto você inicia as compressões.",
+  afogamento: "Depois de retirar a pessoa da água, ligue 192 imediatamente — mesmo que pareça bem, o afogamento pode ter complicações horas depois.",
+  "choque-eletrico": "Depois de garantir que a energia foi desligada e for seguro se aproximar, ligue 192 imediatamente — o choque elétrico pode causar parada cardíaca mesmo sem sinais aparentes.",
+  convulsao: "Se a crise durar mais de 5 minutos, se repetir sem a pessoa recobrar a consciência entre uma e outra, ou for a primeira crise da pessoa, ligue 192 imediatamente.",
+  sangramento: "Se o sangramento não para com pressão direta, ligue 192 imediatamente.",
+  intoxicacao: "Em caso de ingestão de substância desconhecida ou em grande quantidade, ligue 192 imediatamente.",
+  calor: "Se a pessoa estiver confusa, desmaiada ou com a pele muito quente e seca, ligue 192 imediatamente — pode ser insolação, uma emergência."
+};
+
+// Picadas e Mordidas: o alerta só se aplica às abas de animais peçonhentos
+// (aranha, escorpião, cobra) — picada de inseto comum e mordida de animal
+// (ex.: cachorro) não precisam do mesmo nível de urgência.
+const TEXTO_FACA_AGORA_PICADAS = "Em caso de picada de animal peçonhento (aranha, escorpião ou cobra), ligue 192 ou vá a um hospital de referência imediatamente.";
+const SUBCATEGORIAS_PICADAS_PECONHENTAS = ["aranha", "escorpiao", "cobra"];
+
+function textoFacaAgora192(m, subAtual) {
+  if (m.id === "picadas") {
+    return subAtual && SUBCATEGORIAS_PICADAS_PECONHENTAS.includes(subAtual.id)
+      ? TEXTO_FACA_AGORA_PICADAS
+      : null;
+  }
+  return TEXTOS_FACA_AGORA_192[m.id] || null;
 }
 
 function blocoMetronomoRCP() {
@@ -447,8 +496,8 @@ function blocoMetronomoRCP() {
     <div class="bloco metronomo-rcp">
       <h3>Metrônomo de RCP</h3>
       <p class="metronomo-desc">Toque para ouvir o ritmo das compressões — ${METRONOMO_BPM} por minuto (dentro da faixa recomendada de 100 a 120).</p>
-      <div class="metronomo-visual"><div class="metronomo-pulso" id="metronomo-pulso">❤️</div></div>
-      <button class="metronomo-btn" id="metronomo-btn" type="button">▶️ Iniciar ritmo</button>
+      <div class="metronomo-visual"><div class="metronomo-pulso" id="metronomo-pulso"><img src="img/icones/icone-coracao.webp" alt="" class="icone-metronomo-coracao-img"></div></div>
+      <button class="metronomo-btn" id="metronomo-btn" type="button">${ICONE_METRONOMO_INICIAR}</button>
     </div>
   `;
 }
@@ -489,7 +538,7 @@ function renderModulo(id, subId) {
   window.scrollTo(0, 0);
   app.innerHTML = `
     <div class="tela-modulo">
-      <button class="voltar-btn" id="voltar">← Voltar ao menu inicial</button>
+      <button class="voltar-btn" id="voltar"><img src="img/icones/icone-voltar.webp" alt="" class="icone-voltar-img"> Voltar ao menu inicial</button>
 
       <div class="modulo-hero" style="background:${gradienteModulo(m.cor)};">
         <div class="card-icone">${m.icone}</div>
@@ -498,6 +547,11 @@ function renderModulo(id, subId) {
       </div>
 
       ${blocoBotaoLeitura()}
+
+      ${(() => {
+        const textoAlerta = textoFacaAgora192(m, subAtual);
+        return textoAlerta ? blocoFacaAgora192(textoAlerta) : "";
+      })()}
 
       ${m.id === "rcp" ? blocoMetronomoRCP() : ""}
 
@@ -592,7 +646,7 @@ function renderEstudos() {
       <div class="categoria-estudo">
         <h2 class="categoria-titulo">Pratique</h2>
         <button class="quiz-cta" id="btn-abrir-quiz" type="button">
-          <span class="quiz-cta-icone" aria-hidden="true">📝</span>
+          <span class="quiz-cta-icone" aria-hidden="true"><img src="img/icones/icone-quiz.webp" alt="" class="icone-quiz-cta-img"></span>
           <span class="quiz-cta-texto">
             <strong>Teste seus conhecimentos</strong>
             <span>${QUIZ_QTD_PERGUNTAS} perguntas de múltipla escolha, sorteadas dos módulos do app</span>
@@ -710,10 +764,10 @@ const NOMES_TEMA = {
   daltonico: "Modo para daltônicos",
 };
 const ICONES_TEMA = {
-  light: "☀️",
-  dark: "🌙",
-  contraste: "◐",
-  daltonico: "🎨",
+  light: '<img src="img/icones/tema-claro.webp" alt="" class="icone-tema-img">',
+  dark: '<img src="img/icones/tema-escuro.webp" alt="" class="icone-tema-img">',
+  contraste: '<img src="img/icones/tema-contraste.webp" alt="" class="icone-tema-img">',
+  daltonico: '<img src="img/icones/tema-daltonico.webp" alt="" class="icone-tema-img">',
 };
 
 function temaEfetivo() {
@@ -731,7 +785,7 @@ function atualizarBotaoTema() {
   // ao tocar" — agora o toque abre um menu com todas as opções, então não
   // há mais um único "próximo" fixo). Tooltip nativo (desktop) e
   // aria-label (leitor de tela) reforçam o mesmo nome por extenso.
-  icone.textContent = ICONES_TEMA[atual];
+  icone.innerHTML = ICONES_TEMA[atual];
   btn.title = `Tema atual: ${NOMES_TEMA[atual]}`;
   btn.setAttribute("aria-label", `Escolher tema (atual: ${NOMES_TEMA[atual]})`);
   atualizarMenuTemaAtivo();
@@ -744,7 +798,7 @@ function construirMenuTema() {
     <button class="tema-menu-item" type="button" role="menuitemradio" data-tema="${tema}">
       <span class="tema-menu-icone" aria-hidden="true">${ICONES_TEMA[tema]}</span>
       <span class="tema-menu-nome">${NOMES_TEMA[tema]}</span>
-      <span class="tema-menu-check" aria-hidden="true">✓</span>
+      <span class="tema-menu-check" aria-hidden="true"><img src="img/icones/icone-tema-check.webp" alt="" class="icone-tema-check-img"></span>
     </button>
   `).join("");
   menu.querySelectorAll(".tema-menu-item").forEach((item) => {
@@ -923,7 +977,7 @@ function responderQuiz(indiceEscolhido) {
   feedback.hidden = false;
   feedback.className = "quiz-feedback " + (acertou ? "acerto" : "erro");
   feedback.innerHTML = `
-    <p class="quiz-feedback-titulo">${acertou ? "✅ Certa resposta!" : "❌ Não foi dessa vez."}</p>
+    <p class="quiz-feedback-titulo">${acertou ? '<img src="img/icones/icone-check.webp" alt="" class="icone-quiz-feedback-img"> Certa resposta!' : '<img src="img/icones/icone-x.webp" alt="" class="icone-quiz-feedback-img"> Não foi dessa vez.'}</p>
     <p class="quiz-feedback-texto">${p.explicacao}</p>
     <button class="quiz-btn-proxima" id="quiz-proxima" type="button">${ultima ? "Ver resultado →" : "Próxima pergunta →"}</button>
   `;
@@ -945,7 +999,7 @@ function renderQuizResultado() {
   const total = quizPerguntasAtuais.length;
   const pct = Math.round((quizAcertos / total) * 100);
   let mensagem;
-  if (pct === 100) mensagem = "Mandou muito bem! Você acertou tudo. 🎉";
+  if (pct === 100) mensagem = 'Mandou muito bem! Você acertou tudo. <img src="img/icones/icone-confete.webp" alt="" class="icone-confete-img">';
   else if (pct >= 70) mensagem = "Muito bom! Você conhece bem os primeiros socorros.";
   else if (pct >= 40) mensagem = "Bom começo! Vale revisar os módulos das perguntas que errou.";
   else mensagem = "Vale a pena revisitar os módulos — cada tentativa sorteia perguntas diferentes.";
@@ -1002,7 +1056,7 @@ function apagarCartaoStorage() {
 function avisoPrivacidadeCartaoHtml() {
   return `
     <div class="cartao-aviso-privacidade">
-      <span class="cartao-aviso-icone" aria-hidden="true">🔒</span>
+      <span class="cartao-aviso-icone" aria-hidden="true"><img src="img/icones/icone-cadeado.webp" alt="" class="icone-cadeado-img"></span>
       <p>Essas informações ficam salvas <strong>somente neste aparelho</strong>. Elas não são enviadas para nenhum servidor nem saem do seu celular.</p>
     </div>
   `;

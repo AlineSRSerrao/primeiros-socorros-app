@@ -9,7 +9,7 @@ const MODULOS = [
     id: "engasgo",
     titulo: "Engasgo",
     cor: "#D32F2F",
-    icone: "🫁",
+    icone: '<img src="img/icones/icone-engasgo.webp" alt="" class="icone-modulo-img">',
     videos: [
       {
         titulo: "Vídeo curto: orientação rápida",
@@ -178,7 +178,7 @@ const MODULOS = [
     id: "hemorragia-nasal",
     titulo: "Hemorragia Nasal",
     cor: "#C2185B",
-    icone: "🩹",
+    icone: '<img src="img/icones/icone-hemorragia-nasal.webp" alt="" class="icone-modulo-img">',
     imagem: "img/hemorragia-nasal.webp",
     videos: [{
       titulo: "Assistir vídeo explicativo",
@@ -200,15 +200,11 @@ const MODULOS = [
       "Não tampe o nariz empurrando papel ou algodão para dentro."
     ]
   },
-  // NOTA PARA REVISÃO CLÍNICA: o protocolo de RCP para afogamento (começar com
-  // ventilações antes das compressões) é diferente do protocolo padrão e
-  // costuma aparecer em diretrizes internacionais de suporte básico de vida —
-  // mas peça para a equipe de Enfermagem confirmar a versão vigente antes de publicar.
   {
     id: "afogamento",
     titulo: "Afogamento",
     cor: "#0277BD",
-    icone: "🌊",
+    icone: '<img src="img/icones/icone-afogamento.webp" alt="" class="icone-modulo-img">',
     imagem: "img/afogamento-ilustracao.webp",
     resumo: "Dificuldade respiratória por submersão ou imersão em água.",
     sinais: [
@@ -233,7 +229,7 @@ const MODULOS = [
     id: "sangramento",
     titulo: "Sangramento intenso",
     cor: "#B71C1C",
-    icone: "🩸",
+    icone: '<img src="img/icones/icone-sangramento.webp" alt="" class="icone-modulo-img">',
     imagem: "img/sangramento-ilustracao.webp",
     resumo: "Ferimentos com perda de sangue abundante.",
     sinais: ["Sangue escorrendo continuamente ou em jato", "Palidez, tontura, pele fria e úmida"],
@@ -250,7 +246,7 @@ const MODULOS = [
     id: "queimaduras",
     titulo: "Queimaduras",
     cor: "#EF6C00",
-    icone: "🔥",
+    icone: '<img src="img/icones/icone-queimaduras.webp" alt="" class="icone-modulo-img">',
     resumo: "Lesões causadas por calor, produtos químicos ou eletricidade. Toque no grau.",
     abasLabel: "Grau da queimadura",
     subcategorias: [
@@ -338,7 +334,7 @@ const MODULOS = [
     id: "desmaio",
     titulo: "Desmaio (síncope)",
     cor: "#1565C0",
-    icone: "💫",
+    icone: '<img src="img/icones/icone-desmaio.webp" alt="" class="icone-modulo-img">',
     imagem: "img/desmaio-ilustracao.webp",
     resumo: "Perda súbita e breve da consciência.",
     sinais: ["Tontura, visão escurecida antes de cair", "Palidez e sudorese"],
@@ -355,7 +351,7 @@ const MODULOS = [
     id: "rcp",
     titulo: "Parada cardiorrespiratória (RCP básica)",
     cor: "#6A1B9A",
-    icone: "❤️",
+    icone: '<img src="img/icones/icone-rcp.webp" alt="" class="icone-modulo-img">',
     imagem: "img/rcp-adulto.webp",
     videos: [
       {
@@ -379,7 +375,7 @@ const MODULOS = [
     id: "fraturas",
     titulo: "Fraturas e entorses",
     cor: "#00838F",
-    icone: "🦴",
+    icone: '<img src="img/icones/icone-fraturas.webp" alt="" class="icone-modulo-img">',
     imagem: "img/fraturas-ilustracao.webp",
     resumo: "Suspeita de osso quebrado ou lesão articular.",
     sinais: ["Dor intensa, inchaço, deformidade", "Dificuldade ou incapacidade de mover a área"],
@@ -395,7 +391,7 @@ const MODULOS = [
     id: "convulsao",
     titulo: "Convulsão",
     cor: "#4527A0",
-    icone: "🧠",
+    icone: '<img src="img/icones/icone-convulsao.webp" alt="" class="icone-modulo-img">',
     imagem: "img/convulsao-ilustracao.webp",
     videos: [{
       titulo: "Assistir vídeo explicativo",
@@ -417,7 +413,7 @@ const MODULOS = [
     id: "intoxicacao",
     titulo: "Intoxicação / ingestão de substância",
     cor: "#2E7D32",
-    icone: "☠️",
+    icone: '<img src="img/icones/icone-intoxicacao.webp" alt="" class="icone-modulo-img">',
     imagem: "img/intoxicacao-ilustracao.webp",
     resumo: "Ingestão acidental de produto químico, medicamento ou planta tóxica.",
     sinais: ["Náusea, vômito, confusão", "Embalagem ou substância próxima à pessoa"],
@@ -433,7 +429,7 @@ const MODULOS = [
     id: "picadas",
     titulo: "Picadas e Mordidas",
     cor: "#558B2F",
-    icone: "🐝",
+    icone: '<img src="img/icones/icone-picadas-cachorro.webp" alt="" class="icone-modulo-img">',
     resumo: "Picada de inseto, aranha, escorpião, cobra ou mordida de animal. Toque no tipo.",
     abasLabel: "Tipo de picada ou mordida",
     linksExternos: [
@@ -549,15 +545,11 @@ const MODULOS = [
       }
     ]
   },
-  // NOTA PARA REVISÃO CLÍNICA: este módulo é sobre primeiros socorros psicológicos
-  // (crise de ansiedade/pânico), não uma condição física. Peça para a equipe de
-  // Enfermagem revisar a técnica de respiração e a linguagem antes de publicar —
-  // conteúdo baseado em orientações gerais de suporte em crise, não é diagnóstico.
   {
     id: "ansiedade",
     titulo: "Crise de ansiedade",
     cor: "#00ACC1",
-    icone: "🧘",
+    icone: '<img src="img/icones/icone-ansiedade.webp" alt="" class="icone-modulo-img">',
     imagem: "img/ansiedade-ilustracao.webp",
     resumo: "Medo ou pânico intensos, com sintomas físicos, sem causa física aparente.",
     sinais: [
@@ -581,15 +573,11 @@ const MODULOS = [
       "Não segure ou contenha a pessoa à força."
     ]
   },
-  // NOTA PARA REVISÃO CLÍNICA: choque elétrico pode causar lesões internas e
-  // arritmias sem sinal externo visível. Peça para a equipe de Enfermagem
-  // confirmar a ordem dos passos (segurança da cena antes de qualquer contato)
-  // antes de publicar.
   {
     id: "choque-eletrico",
     titulo: "Choque elétrico",
     cor: "#FFB300",
-    icone: "⚡",
+    icone: '<img src="img/icones/icone-choque-eletrico.webp" alt="" class="icone-modulo-img">',
     imagem: "img/choque-eletrico-ilustracao.webp",
     resumo: "Contato do corpo com corrente elétrica. A segurança da cena vem antes de tudo.",
     sinais: [
@@ -612,15 +600,11 @@ const MODULOS = [
       "Não subestime um choque elétrico só porque não há queimadura visível — a pessoa deve ser avaliada em um hospital mesmo parecendo bem."
     ]
   },
-  // NOTA PARA REVISÃO CLÍNICA: distinguir "objeto no olho" (pode ter remoção
-  // simples) de "produto químico no olho" (lavagem prolongada, emergência) é
-  // importante — peça para a equipe de Enfermagem confirmar os tempos de
-  // lavagem e os critérios de quando NÃO tentar remover o objeto.
   {
     id: "trauma-ocular",
     titulo: "Trauma Ocular (Objeto ou Química nos Olhos)",
     cor: "#00897B",
-    icone: "👁️",
+    icone: '<img src="img/icones/icone-trauma-ocular.webp" alt="" class="icone-modulo-img">',
     resumo: "Objeto ou produto químico atingindo o olho. Toque no tipo.",
     abasLabel: "Tipo de trauma",
     subcategorias: [
@@ -673,7 +657,7 @@ const MODULOS = [
     id: "calor",
     titulo: "Insolação e exaustão pelo calor",
     cor: "#F9A825",
-    icone: "☀️",
+    icone: '<img src="img/icones/icone-calor.webp" alt="" class="icone-modulo-img">',
     imagem: "img/insolacao-ilustracao.webp",
     videos: [{
       titulo: "Assistir vídeo explicativo",
@@ -691,17 +675,11 @@ const MODULOS = [
     ],
     naoFaca: ["Não ofereça bebidas com álcool ou cafeína.", "Não force líquidos se a pessoa estiver confusa ou inconsciente."]
   },
-  // NOTA PARA REVISÃO CLÍNICA: classificação de gravidade (leve/moderada/grave)
-  // e as faixas de temperatura baseadas em tuasaude.com/hipotermia — é um site
-  // de conteúdo de saúde, não uma fonte médica oficial/primária. Peça para a
-  // equipe de Enfermagem confirmar as faixas de temperatura, a orientação de
-  // manusear a vítima grave com o mínimo de movimento possível (risco de
-  // arritmia), e o método canguru descrito na aba Bebê, antes de publicar.
   {
     id: "hipotermia",
     titulo: "Hipotermia por exposição ao frio",
     cor: "#3F51B5",
-    icone: "❄️",
+    icone: '<img src="img/icones/icone-hipotermia.webp" alt="" class="icone-modulo-img">',
     resumo: "Temperatura corporal abaixo de 35°C por exposição ao frio. Toque na faixa.",
     abasLabel: "Gravidade / idade",
     subcategorias: [
