@@ -140,13 +140,46 @@
   --alerta-text: #B24700;
 }
 
+/* Atkinson Hyperlegible (Braille Institute) — hospedada localmente para
+   funcionar 100% offline (sem depender do Google Fonts online). Desenhada
+   para maximizar a legibilidade, inclusive para baixa visão — combina com
+   os modos de acessibilidade do app (alto contraste, daltônico). Licença
+   SIL Open Font License 1.1 (ver fonts/LICENSE-atkinson-hyperlegible.txt). */
+@font-face {
+  font-family: "Atkinson Hyperlegible";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("../fonts/atkinson-hyperlegible-400.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Atkinson Hyperlegible";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("../fonts/atkinson-hyperlegible-700.woff2") format("woff2");
+}
+
+/* Lexend — usada só nos títulos (cabeçalho do app e cabeçalho dos módulos)
+   para dar identidade visual, mantendo o corpo do texto na Atkinson
+   Hyperlegible. Também desenvolvida com base em pesquisa de legibilidade/
+   fluência de leitura. Hospedada localmente pelo mesmo motivo (offline).
+   Licença SIL Open Font License 1.1 (ver fonts/LICENSE-lexend.txt). */
+@font-face {
+  font-family: "Lexend";
+  font-style: normal;
+  font-weight: 800;
+  font-display: swap;
+  src: url("../fonts/lexend-800.woff2") format("woff2");
+}
+
 * { box-sizing: border-box; }
 
 html { -webkit-text-size-adjust: 100%; }
 
 body {
   margin: 0;
-  font-family: -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  font-family: "Atkinson Hyperlegible", -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   background: var(--bg);
   color: var(--ink);
   -webkit-tap-highlight-color: transparent;
@@ -184,6 +217,7 @@ header.app-header {
 }
 
 .brand-title {
+  font-family: "Lexend", "Atkinson Hyperlegible", -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   font-size: 1.3rem;
   font-weight: 800;
   line-height: 1.2;
@@ -191,6 +225,7 @@ header.app-header {
   min-width: 0;
 }
 .brand-title small {
+  font-family: "Atkinson Hyperlegible", -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   display: block;
   font-weight: 500;
   font-size: 0.8rem;
@@ -440,6 +475,7 @@ main {
   min-height: 32px;
 }
 .icone-voltar-img { width: 16px; height: 16px; object-fit: contain; }
+.icone-seta-avancar-img { width: 16px; height: 16px; object-fit: contain; transform: scaleX(-1); display: block; }
 
 .modulo-hero {
   border-radius: var(--radius);
@@ -449,7 +485,7 @@ main {
   box-shadow: var(--shadow-md);
 }
 .modulo-hero .card-icone { background: rgba(255,255,255,0.18); width: 48px; height: 48px; font-size: 24px; margin-bottom: 10px; }
-.modulo-hero h2 { margin: 0 0 6px; font-size: 1.3rem; }
+.modulo-hero h2 { margin: 0 0 6px; font-size: 1.3rem; font-family: "Lexend", "Atkinson Hyperlegible", -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; font-weight: 800; }
 .modulo-hero p { margin: 0; opacity: 0.92; font-size: 0.9rem; }
 
 /* ---------- Leitura em voz alta (acessibilidade) ---------- */
