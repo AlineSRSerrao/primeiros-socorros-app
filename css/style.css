@@ -475,7 +475,7 @@ main {
   min-height: 32px;
 }
 .icone-voltar-img { width: 16px; height: 16px; object-fit: contain; }
-.icone-seta-avancar-img { width: 16px; height: 16px; object-fit: contain; transform: scaleX(-1); display: block; }
+.icone-seta-avancar-img { width: 16px; height: 16px; object-fit: contain; display: block; }
 
 .modulo-hero {
   border-radius: var(--radius);

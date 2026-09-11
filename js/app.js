@@ -651,7 +651,7 @@ function renderEstudos() {
             <strong>Teste seus conhecimentos</strong>
             <span>${QUIZ_QTD_PERGUNTAS} perguntas de múltipla escolha, sorteadas dos módulos do app</span>
           </span>
-          <span class="quiz-cta-seta" aria-hidden="true"><img src="img/icones/icone-voltar.webp" alt="" class="icone-seta-avancar-img"></span>
+          <span class="quiz-cta-seta" aria-hidden="true"><img src="img/icones/icone-seta-avancar.webp" alt="" class="icone-seta-avancar-img"></span>
         </button>
       </div>
       ${conteudoHtml}
