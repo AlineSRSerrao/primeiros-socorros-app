@@ -411,7 +411,7 @@ const MODULOS = [
   },
   {
     id: "intoxicacao",
-    titulo: "Intoxicação / ingestão de substância",
+    titulo: "Intoxicação / Ingestão de substância",
     cor: "#2E7D32",
     icone: '<img src="img/icones/icone-intoxicacao.webp" alt="" class="icone-modulo-img">',
     imagem: "img/intoxicacao-ilustracao.webp",
@@ -602,7 +602,7 @@ const MODULOS = [
   },
   {
     id: "trauma-ocular",
-    titulo: "Trauma Ocular (Objeto ou Química nos Olhos)",
+    titulo: "Trauma Ocular",
     cor: "#00897B",
     icone: '<img src="img/icones/icone-trauma-ocular.webp" alt="" class="icone-modulo-img">',
     resumo: "Objeto ou produto químico atingindo o olho. Toque no tipo.",

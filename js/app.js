@@ -651,7 +651,7 @@ function renderEstudos() {
             <strong>Teste seus conhecimentos</strong>
             <span>${QUIZ_QTD_PERGUNTAS} perguntas de múltipla escolha, sorteadas dos módulos do app</span>
           </span>
-          <span class="quiz-cta-seta" aria-hidden="true">→</span>
+          <span class="quiz-cta-seta" aria-hidden="true"><img src="img/icones/icone-voltar.webp" alt="" class="icone-seta-avancar-img"></span>
         </button>
       </div>
       ${conteudoHtml}
@@ -716,7 +716,7 @@ function renderSamuBombeiros() {
 
   app.innerHTML = `
     <div class="tela-pagina">
-      <button class="voltar-btn" id="voltar-comparativo">← Voltar</button>
+      <button class="voltar-btn" id="voltar-comparativo"><img src="img/icones/icone-voltar.webp" alt="" class="icone-voltar-img"> Voltar</button>
       <h1 class="pagina-titulo">${pagina.titulo}</h1>
       <p class="pagina-subtitulo">${pagina.subtitulo}</p>
 
@@ -934,7 +934,7 @@ function renderQuizPergunta() {
 
   app.innerHTML = `
     <div class="tela-pagina tela-quiz">
-      <button class="voltar-btn" id="voltar-quiz">← Voltar</button>
+      <button class="voltar-btn" id="voltar-quiz"><img src="img/icones/icone-voltar.webp" alt="" class="icone-voltar-img"> Voltar</button>
       <h1 class="pagina-titulo">Teste seus conhecimentos</h1>
       <p class="pagina-subtitulo">Pergunta ${numero} de ${total} — baseada nos módulos do app.</p>
 
@@ -1006,7 +1006,7 @@ function renderQuizResultado() {
 
   app.innerHTML = `
     <div class="tela-pagina tela-quiz">
-      <button class="voltar-btn" id="voltar-quiz-resultado">← Voltar</button>
+      <button class="voltar-btn" id="voltar-quiz-resultado"><img src="img/icones/icone-voltar.webp" alt="" class="icone-voltar-img"> Voltar</button>
       <h1 class="pagina-titulo">Resultado</h1>
       <div class="bloco quiz-resultado">
         <p class="quiz-resultado-pontuacao">${quizAcertos} / ${total}</p>
@@ -1094,7 +1094,7 @@ function renderCartaoForm(dadosExistentes) {
   const d = dadosExistentes || {};
   app.innerHTML = `
     <div class="tela-pagina tela-cartao">
-      <button class="voltar-btn" id="cartao-form-voltar">← Voltar</button>
+      <button class="voltar-btn" id="cartao-form-voltar"><img src="img/icones/icone-voltar.webp" alt="" class="icone-voltar-img"> Voltar</button>
       <h1 class="pagina-titulo">${dadosExistentes ? "Editar cartão" : "Preencher cartão"}</h1>
       ${avisoPrivacidadeCartaoHtml()}
       <form class="cartao-form bloco" id="cartao-form">
