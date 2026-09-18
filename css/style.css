@@ -242,11 +242,15 @@ header.app-header {
   grid-template-columns: 1fr 1fr;
   gap: 8px;
 }
+.emergency-bar:has(.btn-emergencia-header:not([hidden])) {
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(52px, auto);
+}
 .emergency-bar a {
   display: flex;
   align-items: center;
   justify-content: flex-start;
   gap: 8px;
+  min-width: 0;
   background: linear-gradient(100deg, var(--red) 0%, var(--red) 50%, #fff 145%);
   color: #fff;
   text-decoration: none;
@@ -261,6 +265,30 @@ header.app-header {
 }
 .emergency-bar a:active { transform: scale(0.97); box-shadow: 0 1px 4px rgba(211,47,47,0.3); }
 .emergency-bar a .num { font-size: 1.1rem; }
+
+/* Atalho global do botão de emergência — só aparece (sem [hidden]) quando
+   o contato de emergência já está cadastrado no cartão. Visual mais discreto
+   (contorno, não vermelho sólido) para não parecer um terceiro número de
+   chamada como SAMU/Bombeiros. */
+.btn-emergencia-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #FFC107 0%, #FFD54F 100%);
+  border: 1px solid rgba(11,31,68,0.15);
+  color: var(--navy);
+  font-weight: 700;
+  font-size: 0.78rem;
+  padding: 11px 12px;
+  border-radius: 10px;
+  cursor: pointer;
+  min-height: 44px;
+  white-space: nowrap;
+  transition: transform .1s ease, filter .15s ease;
+}
+.btn-emergencia-header:active { transform: scale(0.97); filter: brightness(0.92); }
+.btn-emergencia-header:focus-visible { outline: 2px solid var(--navy); outline-offset: 1px; }
+.btn-emergencia-header[hidden] { display: none; }
 
 /* Botão que leva à comparação SAMU x Bombeiros — logo abaixo dos números,
    para tirar a dúvida bem no momento em que a pessoa vai ligar. */

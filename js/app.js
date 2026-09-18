@@ -1170,6 +1170,7 @@ function renderCartaoForm(dadosExistentes) {
     };
     if (salvarCartao(novosDados)) {
       mostrarToast("Cartão salvo neste aparelho.");
+      atualizarBotaoEmergenciaHeader();
       irComTransicao(() => renderCartaoView(novosDados));
     } else {
       mostrarToast("Não foi possível salvar. Verifique o armazenamento do navegador.");
@@ -1182,6 +1183,7 @@ function renderCartaoForm(dadosExistentes) {
       if (confirm("Apagar todos os dados do seu cartão de emergência? Essa ação não pode ser desfeita.")) {
         apagarCartaoStorage();
         mostrarToast("Dados do cartão apagados.");
+        atualizarBotaoEmergenciaHeader();
         irComTransicao(renderCartaoIntro);
       }
     });
@@ -1232,6 +1234,7 @@ function renderCartaoView(dados) {
     if (confirm("Apagar todos os dados do seu cartão de emergência? Essa ação não pode ser desfeita.")) {
       apagarCartaoStorage();
       mostrarToast("Dados do cartão apagados.");
+      atualizarBotaoEmergenciaHeader();
       irComTransicao(renderCartaoIntro);
     }
   });
@@ -1275,6 +1278,24 @@ function ehIOS() {
   const ua = navigator.userAgent || navigator.platform || "";
   return /iP(hone|od|ad)/.test(ua);
 }
+
+// ---------- Atalho global do botão de emergência (cabeçalho, visível em qualquer tela) ----------
+function atualizarBotaoEmergenciaHeader() {
+  const btn = document.getElementById("btn-emergencia-header");
+  if (!btn) return;
+  btn.hidden = !contatoEmergenciaValido(carregarCartao());
+}
+
+const btnEmergenciaHeader = document.getElementById("btn-emergencia-header");
+if (btnEmergenciaHeader) {
+  btnEmergenciaHeader.addEventListener("click", () => {
+    const dados = carregarCartao();
+    if (contatoEmergenciaValido(dados)) {
+      abrirConfirmacaoEmergencia(dados);
+    }
+  });
+}
+atualizarBotaoEmergenciaHeader();
 
 function montarMensagemEmergencia(dados, linkLocalizacao) {
   const nome = dados.nome ? dados.nome : "Uma pessoa";
