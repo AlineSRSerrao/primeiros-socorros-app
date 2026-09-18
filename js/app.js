@@ -1208,6 +1208,7 @@ function renderCartaoView(dados) {
     <div class="tela-pagina tela-cartao">
       <h1 class="pagina-titulo">Cartão de emergência</h1>
       ${avisoPrivacidadeCartaoHtml()}
+      ${blocoBotaoEmergenciaHtml(dados)}
       <div class="bloco cartao-view">
         ${dados.nome ? `<h2 class="cartao-view-nome">${escapeHtml(dados.nome)}</h2>` : ""}
         ${linha("Tipo sanguíneo", dados.tipoSanguineo)}
@@ -1234,6 +1235,158 @@ function renderCartaoView(dados) {
       irComTransicao(renderCartaoIntro);
     }
   });
+
+  const btnEmergencia = document.getElementById("btn-emergencia-abrir");
+  if (btnEmergencia) {
+    btnEmergencia.addEventListener("click", () => abrirConfirmacaoEmergencia(dados));
+  }
+}
+
+// ---------- Botão de emergência: envia localização por SMS/WhatsApp pro contato cadastrado ----------
+function digitosTelefone(tel) {
+  return String(tel || "").replace(/\D/g, "");
+}
+
+function contatoEmergenciaValido(dados) {
+  return digitosTelefone(dados && dados.contatoTelefone).length >= 10;
+}
+
+function blocoBotaoEmergenciaHtml(dados) {
+  if (contatoEmergenciaValido(dados)) {
+    const nomeContato = dados.contatoNome ? escapeHtml(dados.contatoNome) : "seu contato de emergência";
+    return `
+      <div class="bloco-faca-agora bloco-emergencia">
+        <div class="faca-agora-texto">
+          <h3>Botão de emergência</h3>
+          <p>Prepara uma mensagem com sua localização atual para ${nomeContato}, pra você enviar por SMS ou WhatsApp.</p>
+        </div>
+        <button class="faca-agora-btn" id="btn-emergencia-abrir" type="button">Acionar</button>
+      </div>
+    `;
+  }
+  return `
+    <div class="bloco cartao-emergencia-vazio">
+      <p>Preencha o telefone do contato de emergência acima para ativar o botão de emergência (envia sua localização por SMS ou WhatsApp com um toque).</p>
+    </div>
+  `;
+}
+
+function ehIOS() {
+  const ua = navigator.userAgent || navigator.platform || "";
+  return /iP(hone|od|ad)/.test(ua);
+}
+
+function montarMensagemEmergencia(dados, linkLocalizacao) {
+  const nome = dados.nome ? dados.nome : "Uma pessoa";
+  const base = `${nome} está em uma emergência e precisa de ajuda.`;
+  return linkLocalizacao ? `${base} Minha localização: ${linkLocalizacao}` : `${base} (não foi possível obter a localização)`;
+}
+
+function linkSmsEmergencia(telefoneDigits, mensagem) {
+  const numero = `+55${telefoneDigits}`;
+  const separador = ehIOS() ? "&" : "?";
+  return `sms:${numero}${separador}body=${encodeURIComponent(mensagem)}`;
+}
+
+function linkWhatsAppEmergencia(telefoneDigits, mensagem) {
+  return `https://wa.me/55${telefoneDigits}?text=${encodeURIComponent(mensagem)}`;
+}
+
+function fecharModalEmergencia() {
+  const el = document.getElementById("emergencia-modal");
+  if (el) el.remove();
+}
+
+function renderModalEmergencia(conteudoHtml) {
+  fecharModalEmergencia();
+  const div = document.createElement("div");
+  div.id = "emergencia-modal";
+  div.className = "emergencia-modal";
+  div.setAttribute("role", "dialog");
+  div.setAttribute("aria-modal", "true");
+  div.innerHTML = `<div class="emergencia-modal-card">${conteudoHtml}</div>`;
+  document.body.appendChild(div);
+  div.addEventListener("click", (e) => {
+    if (e.target === div) fecharModalEmergencia();
+  });
+  const onEsc = (e) => {
+    if (e.key === "Escape") {
+      fecharModalEmergencia();
+      document.removeEventListener("keydown", onEsc);
+    }
+  };
+  document.addEventListener("keydown", onEsc);
+}
+
+function abrirConfirmacaoEmergencia(dados) {
+  const nomeContato = dados.contatoNome || "seu contato de emergência";
+  renderModalEmergencia(`
+    <h2 class="emergencia-modal-titulo">Acionar botão de emergência?</h2>
+    <p class="emergencia-modal-texto">Isso vai preparar uma mensagem com sua localização atual para <strong>${escapeHtml(nomeContato)}</strong> (${escapeHtml(dados.contatoTelefone)}). Você ainda vai precisar tocar em enviar no seu aplicativo de mensagens — nada é enviado sozinho.</p>
+    <div class="emergencia-modal-acoes">
+      <button class="cartao-btn-primario" id="emergencia-confirmar" type="button">Sim, continuar</button>
+      <button class="cartao-btn-perigo" id="emergencia-cancelar" type="button">Cancelar</button>
+    </div>
+  `);
+  document.getElementById("emergencia-cancelar").addEventListener("click", fecharModalEmergencia);
+  document.getElementById("emergencia-confirmar").addEventListener("click", () => obterLocalizacaoEEnviar(dados));
+}
+
+function obterLocalizacaoEEnviar(dados) {
+  renderModalEmergencia(`
+    <h2 class="emergencia-modal-titulo">Obtendo sua localização…</h2>
+    <p class="emergencia-modal-texto">Isso pode levar alguns segundos. Certifique-se de ter permitido o acesso à localização.</p>
+    <div class="emergencia-modal-acoes">
+      <button class="cartao-btn-perigo" id="emergencia-cancelar" type="button">Cancelar</button>
+    </div>
+  `);
+  document.getElementById("emergencia-cancelar").addEventListener("click", fecharModalEmergencia);
+
+  if (!("geolocation" in navigator)) {
+    mostrarFalhaLocalizacao(dados);
+    return;
+  }
+
+  navigator.geolocation.getCurrentPosition(
+    (pos) => {
+      const link = `https://www.google.com/maps?q=${pos.coords.latitude},${pos.coords.longitude}`;
+      mostrarEscolhaEnvio(dados, link);
+    },
+    () => {
+      mostrarFalhaLocalizacao(dados);
+    },
+    { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
+  );
+}
+
+function mostrarFalhaLocalizacao(dados) {
+  renderModalEmergencia(`
+    <h2 class="emergencia-modal-titulo">Não foi possível obter sua localização</h2>
+    <p class="emergencia-modal-texto">Verifique se você permitiu o acesso à localização pro navegador e se o GPS está ativado. Você ainda pode enviar a mensagem sem a localização.</p>
+    <div class="emergencia-modal-acoes">
+      <button class="cartao-btn-primario" id="emergencia-sem-local" type="button">Enviar sem localização</button>
+      <button class="cartao-btn-perigo" id="emergencia-cancelar" type="button">Cancelar</button>
+    </div>
+  `);
+  document.getElementById("emergencia-cancelar").addEventListener("click", fecharModalEmergencia);
+  document.getElementById("emergencia-sem-local").addEventListener("click", () => mostrarEscolhaEnvio(dados, null));
+}
+
+function mostrarEscolhaEnvio(dados, linkLocalizacao) {
+  const telefoneDigits = digitosTelefone(dados.contatoTelefone);
+  const mensagem = montarMensagemEmergencia(dados, linkLocalizacao);
+  const smsHref = linkSmsEmergencia(telefoneDigits, mensagem);
+  const waHref = linkWhatsAppEmergencia(telefoneDigits, mensagem);
+  renderModalEmergencia(`
+    <h2 class="emergencia-modal-titulo">Como você quer enviar?</h2>
+    <p class="emergencia-modal-texto">${linkLocalizacao ? "Sua localização já está preenchida na mensagem." : "A mensagem será enviada sem a localização."} Vai abrir o app escolhido com tudo pronto — só falta tocar em enviar.</p>
+    <div class="emergencia-modal-acoes">
+      <a class="cartao-btn-primario emergencia-btn-envio" id="emergencia-link-sms" href="${smsHref}">Enviar por SMS</a>
+      <a class="cartao-btn-primario emergencia-btn-envio" id="emergencia-link-whatsapp" href="${waHref}" target="_blank" rel="noopener">Enviar por WhatsApp</a>
+      <button class="cartao-btn-perigo" id="emergencia-cancelar" type="button">Cancelar</button>
+    </div>
+  `);
+  document.getElementById("emergencia-cancelar").addEventListener("click", fecharModalEmergencia);
 }
 
 // ---------- Rodapé de navegação fixo ----------
@@ -1256,6 +1409,7 @@ document.querySelectorAll(".bottom-nav-btn").forEach((btn) => {
 function irComTransicao(fn) {
   pararLeitura();
   pararMetronomo();
+  fecharModalEmergencia();
   if (document.startViewTransition) {
     document.startViewTransition(fn);
   } else {
