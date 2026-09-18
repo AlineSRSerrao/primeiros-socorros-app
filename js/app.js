@@ -1386,7 +1386,13 @@ function mostrarEscolhaEnvio(dados, linkLocalizacao) {
       <button class="cartao-btn-perigo" id="emergencia-cancelar" type="button">Cancelar</button>
     </div>
   `);
-  document.getElementById("emergencia-cancelar").addEventListener("click", fecharModalEmergencia);
+  const btnCancelar = document.getElementById("emergencia-cancelar");
+  btnCancelar.addEventListener("click", fecharModalEmergencia);
+  // Depois que a pessoa toca em enviar (por SMS ou WhatsApp), "Cancelar"
+  // deixa de fazer sentido — nesse ponto o app de mensagens já foi aberto.
+  const marcarComoEnviado = () => { btnCancelar.textContent = "Fechar"; };
+  document.getElementById("emergencia-link-sms").addEventListener("click", marcarComoEnviado);
+  document.getElementById("emergencia-link-whatsapp").addEventListener("click", marcarComoEnviado);
 }
 
 // ---------- Rodapé de navegação fixo ----------
