@@ -48,12 +48,12 @@ const QUIZ_PERGUNTAS = [
     pergunta: "Por quanto tempo, aproximadamente, deve-se manter a pressão contínua nas narinas?",
     opcoes: [
       "2 a 3 minutos",
-      "10 a 15 minutos",
+      "15 minutos",
       "1 hora",
       "Não é necessário pressionar"
     ],
     correta: 1,
-    explicacao: "A pressão deve ser mantida continuamente por 10 a 15 minutos, sem soltar para checar."
+    explicacao: "A pressão deve ser mantida continuamente por 15 minutos, sem soltar para checar."
   },
   {
     modulo: "afogamento",
@@ -108,12 +108,12 @@ const QUIZ_PERGUNTAS = [
     pergunta: "Por quanto tempo, aproximadamente, deve-se resfriar uma queimadura leve com água corrente?",
     opcoes: [
       "1 a 2 minutos",
-      "10 a 20 minutos",
+      "Aproximadamente 10 minutos",
       "1 hora",
       "Não deve resfriar com água"
     ],
     correta: 1,
-    explicacao: "A área deve ser resfriada com água corrente em temperatura ambiente por 10 a 20 minutos."
+    explicacao: "A área deve ser resfriada com água corrente fria, em jato suave, por aproximadamente 10 minutos."
   },
   {
     modulo: "queimaduras",
@@ -276,12 +276,12 @@ const QUIZ_PERGUNTAS = [
     pergunta: "Durante uma crise de ansiedade, qual técnica de respiração o app sugere para ajudar a pessoa?",
     opcoes: [
       "Respirar dentro de um saco de papel",
-      "Inspirar contando até 4, segurar por 4, soltar contando até 6 a 8",
+      "Respirar devagar pelo nariz, usando o diafragma",
       "Prender a respiração o máximo possível",
       "Respirar bem rápido para 'gastar' a ansiedade"
     ],
     correta: 1,
-    explicacao: "O app sugere ajudar a regular a respiração contando: inspirar até 4, segurar por 4, soltar contando até 6 a 8, respirando junto com a pessoa."
+    explicacao: "O app sugere ajudar a pessoa a respirar devagar pelo nariz, usando o diafragma (mais barriga, menos peito), respirando junto com ela para dar o ritmo."
   },
   {
     modulo: "ansiedade",
@@ -309,15 +309,15 @@ const QUIZ_PERGUNTAS = [
   },
   {
     modulo: "choque-eletrico",
-    pergunta: "Se for necessário afastar a vítima da fonte de energia sem desligar o disjuntor, qual material deve ser usado?",
+    pergunta: "Ao encontrar uma pessoa em contato com um fio caído da rede elétrica externa, qual é a conduta mais segura?",
     opcoes: [
-      "Um objeto metálico",
-      "Um objeto seco e não condutor, como madeira, plástico ou borracha",
-      "As próprias mãos, com força",
-      "Um pano molhado"
+      "Afastar o fio com um cabo de madeira",
+      "Não se aproximar, manter outras pessoas afastadas e acionar o socorro e a concessionária de energia",
+      "Puxar a vítima pelas roupas",
+      "Jogar água no local"
     ],
     correta: 1,
-    explicacao: "Deve-se usar um objeto seco e não condutor (madeira, plástico, borracha) — nunca as mãos ou objetos metálicos/molhados."
+    explicacao: "Um fio de rede elétrica caído deve sempre ser tratado como energizado. Não se aproxime nem tente afastá-lo — mantenha distância e acione o 193 e a concessionária de energia."
   },
   {
     modulo: "trauma-ocular",

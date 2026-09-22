@@ -37,7 +37,7 @@ const PAGINA_SOBRE = {
 
 const PAGINA_SAMU_BOMBEIROS = {
   titulo: "SAMU ou Bombeiros?",
-  subtitulo: "Em caso de dúvida na hora de ligar, veja o que cada serviço atende. Se não tiver certeza, ligue para qualquer um dos dois — o atendente orienta e aciona o serviço correto.",
+  subtitulo: "Em caso de dúvida na hora de ligar, veja o que cada serviço atende. Se não tiver certeza, ligue 192 ou 193, descreva a situação e siga as orientações do atendente.",
   samu: {
     titulo: "SAMU — 192",
     icone: '<img src="img/icones/icone-samu.webp" alt="" class="icone-comparativo-titulo-img">',
@@ -51,7 +51,9 @@ const PAGINA_SAMU_BOMBEIROS = {
       "Intoxicações e envenenamentos",
       "Crises psiquiátricas e tentativas de suicídio",
       "Feridos em acidentes de trânsito (atendimento e transporte médico)",
-      "Queimaduras graves e traumas com suspeita de fratura"
+      "Queimaduras graves e traumas com suspeita de fratura",
+      "Vítima de afogamento, já fora da água (atendimento médico)",
+      "Vítima de choque elétrico (avaliação médica, mesmo sem ferimento aparente)"
     ]
   },
   bombeiros: {
@@ -72,8 +74,8 @@ const PAGINA_SAMU_BOMBEIROS = {
   ambos: {
     titulo: "Na dúvida, ou quando envolve os dois",
     itens: [
-      "Se a situação tem risco à vida E precisa de resgate/extração (ex.: acidente com pessoa presa nas ferragens), normalmente os dois serviços são acionados juntos.",
-      "Ligue para qualquer um dos dois números — o atendente identifica a emergência e aciona o serviço adequado.",
+      "Situações com risco à vida e necessidade de resgate ou extração (ex.: acidente com pessoa presa nas ferragens, afogamento ou choque elétrico com fiação exposta) podem exigir atuação conjunta do Corpo de Bombeiros e do SAMU, conforme a organização local.",
+      "Na dúvida, ligue 192 ou 193, descreva a situação com clareza e siga as orientações do atendente.",
       "O importante é ligar rápido e informar com clareza o que está acontecendo e o endereço."
     ]
   }
@@ -104,7 +106,7 @@ const PAGINA_GUIAS = {
     {
       titulo: "Exposição e Substâncias",
       posteres: [
-        { titulo: "Insolação e Exaustão por Calor", imagem: "img/guia-insolacao.webp" },
+        { titulo: "Exaustão pelo Calor e Golpe de Calor", imagem: "img/guia-insolacao.webp" },
         { titulo: "Intoxicação", imagem: "img/guia-intoxicacao.webp" }
       ]
     }
@@ -155,6 +157,75 @@ const PAGINA_ESTUDOS = {
           link: {
             texto: "Ver protocolo completo (gov.br, PDF)",
             url: "https://www.gov.br/saude/pt-br/composicao/saes/samu-192/publicacoes/protocolo-de-suporte-basico-de-vida-1-2.pdf/view"
+          }
+        }
+      ]
+    },
+    {
+      titulo: "Diretrizes usadas na revisão de conteúdo",
+      itens: [
+        {
+          titulo: "AHA 2025 Guidelines for CPR & ECC (engasgo, RCP, DEA)",
+          texto: "American Heart Association — algoritmo atualizado de desobstrução de vias aéreas e suporte básico de vida.",
+          link: {
+            texto: "Acessar (cpr.heart.org)",
+            url: "https://cpr.heart.org/en/resuscitation-science/cpr-and-ecc-guidelines"
+          }
+        },
+        {
+          titulo: "2024 AHA e American Red Cross Guidelines for First Aid",
+          texto: "Diretrizes conjuntas de primeiros socorros — convulsão, objeto no olho e outros temas.",
+          link: {
+            texto: "Acessar (cpr.heart.org)",
+            url: "https://cpr.heart.org/en/resuscitation-science/2024-first-aid-guidelines"
+          }
+        },
+        {
+          titulo: "2024 AHA/AAP Focused Update: Resuscitation Following Drowning",
+          texto: "Atualização específica sobre reanimação após afogamento.",
+          link: {
+            texto: "Acessar (cpr.heart.org)",
+            url: "https://professional.heart.org/en/science-news/2024-aha-and-aap-focused-update-on-special-circumstances-resuscitation-following-drowning"
+          }
+        },
+        {
+          titulo: "Ondas de Calor — Ministério da Saúde",
+          texto: "Definição e sinais de emergência do golpe de calor.",
+          link: {
+            texto: "Acessar (gov.br/saude)",
+            url: "https://www.gov.br/saude/pt-br/assuntos/saude-de-a-a-z/o/ondas-de-calor"
+          }
+        },
+        {
+          titulo: "Nota Técnica Conjunta nº 270/2026 — Ministério da Saúde",
+          texto: "Preparação e resposta a ondas de frio, incluindo classificação da hipotermia.",
+          link: {
+            texto: "Acessar (gov.br/saude, PDF)",
+            url: "https://www.gov.br/saude/pt-br/centrais-de-conteudo/publicacoes/notas-tecnicas/2026/nota-tecnica-conjunta-no-270-2026.pdf"
+          }
+        },
+        {
+          titulo: "Dica em Saúde: Queimaduras — BVS/Ministério da Saúde",
+          texto: "Orientação oficial sobre resfriamento de queimaduras e classificação por grau.",
+          link: {
+            texto: "Acessar (bvsms.saude.gov.br)",
+            url: "https://bvsms.saude.gov.br/bvs/dicas/54queimaduras.html"
+          }
+        },
+        {
+          titulo: "Manejo inicial da crise de ansiedade — Linhas de Cuidado, Ministério da Saúde",
+          texto: "Protocolo do SAMU para primeiro atendimento em crises de ansiedade.",
+          link: {
+            texto: "Acessar (linhasdecuidado.saude.gov.br)",
+            url: "https://linhasdecuidado.saude.gov.br/portal/ansiedade/servico-de-atendimento-movel/manejo-inicial/"
+          }
+        },
+        {
+          titulo: "SAMU 192 — página oficial",
+          texto: "Situações atendidas pelo SAMU, usadas na comparação SAMU x Corpo de Bombeiros.",
+          link: {
+            texto: "Acessar (gov.br/saude)",
+            url: "https://www.gov.br/saude/pt-br/composicao/saes/samu-192"
           }
         }
       ]

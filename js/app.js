@@ -470,10 +470,10 @@ const TEXTOS_FACA_AGORA_192 = {
   rcp: "Se a pessoa não responde e não está respirando normalmente, ligue 192 agora — peça para alguém ligar enquanto você inicia as compressões.",
   afogamento: "Depois de retirar a pessoa da água, ligue 192 imediatamente — mesmo que pareça bem, o afogamento pode ter complicações horas depois.",
   "choque-eletrico": "Depois de garantir que a energia foi desligada e for seguro se aproximar, ligue 192 imediatamente — o choque elétrico pode causar parada cardíaca mesmo sem sinais aparentes.",
-  convulsao: "Se a crise durar mais de 5 minutos, se repetir sem a pessoa recobrar a consciência entre uma e outra, ou for a primeira crise da pessoa, ligue 192 imediatamente.",
+  convulsao: "Ligue 192 se a crise durar mais de 5 minutos, for a primeira crise da pessoa, se repetir sem recuperação entre elas, ocorrer na água ou na gravidez, ou se houver lesão, dificuldade para respirar ou engasgo.",
   sangramento: "Se o sangramento não para com pressão direta, ligue 192 imediatamente.",
   intoxicacao: "Em caso de ingestão de substância desconhecida ou em grande quantidade, ligue 192 imediatamente.",
-  calor: "Se a pessoa estiver confusa, desmaiada ou com a pele muito quente e seca, ligue 192 imediatamente — pode ser insolação, uma emergência."
+  calor: "Se a pessoa estiver confusa, com convulsão, desmaiada ou com a pele muito quente, ligue 192 imediatamente — pode ser golpe de calor, uma emergência médica."
 };
 
 // Picadas e Mordidas: o alerta só se aplica às abas de animais peçonhentos

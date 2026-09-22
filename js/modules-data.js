@@ -65,8 +65,9 @@ const MODULOS = [
         passos: [
           "Se a criança tossir ou falar, incentive a tossir. Se não conseguir respirar, aja imediatamente.",
           "Fique atrás da criança e incline levemente o tronco dela para a frente.",
-          "Feche uma mão em punho e faça 5 compressões abdominais rápidas, para dentro e para cima.",
-          "Repita as compressões até o objeto sair ou a criança voltar a respirar.",
+          "Aplique até 5 tapas firmes entre as escápulas com a base da mão.",
+          "Feche uma mão em punho e faça até 5 compressões abdominais rápidas, para dentro e para cima.",
+          "Alterne ciclos de 5 tapas nas costas e 5 compressões abdominais até o objeto sair ou a criança voltar a respirar.",
           "Se houver ajuda, peça para alguém ligar 192 imediatamente; se estiver sozinho, continue a manobra e ligue 192 em viva-voz.",
           "Se a criança desmaiar, ligue 192 e inicie a RCP."
         ],
@@ -93,13 +94,14 @@ const MODULOS = [
         passos: [
           "Se a adolescente/o adolescente tossir ou falar, incentive a tossir. Se não conseguir respirar, aja imediatamente.",
           "Fique atrás da pessoa e incline levemente o tronco dela para a frente.",
-          "Faça 5 compressões abdominais rápidas, para dentro e para cima (em formato de 'J').",
-          "Repita as compressões até o objeto sair ou a pessoa voltar a respirar.",
+          "Aplique até 5 tapas firmes entre as escápulas com a base da mão.",
+          "Se não resolver, faça até 5 compressões abdominais rápidas, para dentro e para cima.",
+          "Em gestação avançada ou quando não for possível circundar o abdome, alterne 5 tapas nas costas com 5 compressões torácicas no centro do peito, em vez de compressões abdominais.",
+          "Alterne ciclos de 5 tapas nas costas e 5 compressões abdominais (ou torácicas, se aplicável) até o objeto sair ou a pessoa perder a consciência.",
           "Se houver ajuda, peça para alguém ligar 192 imediatamente; se estiver sozinho, continue os ciclos e ligue 192 em viva-voz.",
           "Se a pessoa desmaiar ou não responder, ligue 192 e inicie a RCP."
         ],
         naoFaca: [
-          "Vítimas especiais (grávidas ou pessoas com obesidade): se não for possível circundar o abdômen, use compressões torácicas firmes no centro do peito.",
           "Mesmo que o objeto saia, a vítima deve ser avaliada por um médico para verificar lesões internas."
         ]
       },
@@ -121,11 +123,11 @@ const MODULOS = [
           "Pergunte 'você está engasgado?'. Se ainda tossir com força, incentive a tossir.",
           "Se não conseguir tossir, falar ou respirar: fique atrás da pessoa, incline o tronco dela para a frente.",
           "Aplique até 5 golpes firmes entre as escápulas com a base da mão.",
-          "Se não resolver, faça a manobra de Heimlich: mãos entrelaçadas acima do umbigo, compressões rápidas para dentro e para cima.",
-          "Alterne 5 golpes nas costas e 5 compressões abdominais até desobstruir ou a pessoa perder a consciência.",
+          "Se não resolver, faça a manobra de Heimlich: mãos entrelaçadas acima do umbigo, compressões rápidas para dentro e para cima. Em gestação avançada ou quando não for possível circundar o abdome, alterne 5 golpes nas costas com 5 compressões torácicas no centro do peito, em vez de compressões abdominais.",
+          "Alterne ciclos de 5 golpes nas costas e 5 compressões abdominais (ou torácicas, se aplicável) até desobstruir ou a pessoa perder a consciência.",
           "Se desmaiar, inicie a RCP e peça para alguém chamar ajuda (192)."
         ],
-        naoFaca: ["Se a pessoa estiver grávida ou for muito acima do peso, posicione as mãos mais acima, no meio do peito, em vez do abdômen."]
+        naoFaca: []
       },
       {
         id: "adulto-sozinho",
@@ -163,8 +165,9 @@ const MODULOS = [
         ],
         passos: [
           "Fique atrás da gestante e incline levemente o tronco dela para a frente.",
-          "Faça 5 compressões rápidas no centro do esterno, para trás — nunca no abdômen.",
-          "Repita as compressões torácicas até o objeto sair ou a gestante voltar a respirar.",
+          "Aplique até 5 tapas firmes entre as escápulas com a base da mão.",
+          "Faça até 5 compressões rápidas no centro do esterno, para trás — nunca no abdômen.",
+          "Alterne ciclos de 5 tapas nas costas e 5 compressões torácicas até o objeto sair ou a gestante voltar a respirar.",
           "Se ela desmaiar ou não responder, ligue 192 e inicie a RCP."
         ],
         naoFaca: [
@@ -190,10 +193,10 @@ const MODULOS = [
     passos: [
       "Sente a pessoa e incline a cabeça levemente para a FRENTE, nunca para trás.",
       "Peça para respirar pela boca.",
-      "Pressione as narinas na parte mole (logo abaixo do osso) com os dedos, continuamente, por 10 a 15 minutos sem soltar para checar.",
+      "Pressione as narinas na parte mole (logo abaixo do osso) com os dedos, continuamente, por 15 minutos sem soltar para checar.",
       "Aplique uma compressa fria na base do nariz e na testa, se disponível.",
-      "Depois que parar, oriente a não assoar o nariz nem abaixar a cabeça por algumas horas.",
-      "Procure atendimento médico se o sangramento não parar após 20 minutos, for muito intenso, ou ocorrer após uma pancada na cabeça."
+      "Depois que parar, oriente a não assoar o nariz nem abaixar a cabeça por 24 horas.",
+      "Procure atendimento médico se o sangramento não parar após 15 minutos de compressão contínua, for muito intenso, ou ocorrer após uma pancada na cabeça."
     ],
     naoFaca: [
       "Não incline a cabeça para trás — o sangue pode escorrer pela garganta e causar engasgo ou vômito.",
@@ -218,7 +221,7 @@ const MODULOS = [
       "Ao trazer a vítima para fora, verifique se está respirando.",
       "Se não estiver respirando, inicie a RCP: para afogamento, comece com 5 ventilações de resgate antes das compressões torácicas — diferente do protocolo padrão de RCP.",
       "Retire a pessoa da água fria e a mantenha aquecida com cobertores ou roupas secas.",
-      "Encaminhe para avaliação médica mesmo que a pessoa pareça recuperada — sintomas de complicação pulmonar podem aparecer horas depois (afogamento secundário)."
+      "Encaminhe para avaliação médica mesmo que a pessoa pareça recuperada — sintomas como tosse persistente, falta de ar ou confusão podem aparecer nas horas seguintes e precisam ser avaliados."
     ],
     naoFaca: [
       "Não entre na água para resgatar sem flutuador e sem treinamento — afogamentos duplos são comuns.",
@@ -267,7 +270,7 @@ const MODULOS = [
         ],
         passos: [
           "Afaste a pessoa da fonte de calor.",
-          "Resfrie a área com água corrente em temperatura ambiente por 10 a 20 minutos.",
+          "Resfrie a área com água corrente fria, em jato suave, por aproximadamente 10 minutos.",
           "Hidrate a pele depois de resfriar.",
           "Se necessário, um analgésico comum pode aliviar a dor.",
           "Evite expor a área ao sol até a pele cicatrizar."
@@ -290,7 +293,7 @@ const MODULOS = [
         ],
         passos: [
           "Afaste a pessoa da fonte de calor.",
-          "Resfrie a área com água corrente em temperatura ambiente por 10 a 20 minutos.",
+          "Resfrie a área com água corrente fria, em jato suave, por aproximadamente 10 minutos.",
           "Retire anéis, relógios e roupas apertadas antes que a região inche.",
           "Cubra com um pano limpo e seco, sem apertar.",
           "Procure atendimento médico, principalmente se a queimadura for extensa ou estiver no rosto, mãos, articulações ou genitais."
@@ -339,11 +342,12 @@ const MODULOS = [
     resumo: "Perda súbita e breve da consciência.",
     sinais: ["Tontura, visão escurecida antes de cair", "Palidez e sudorese"],
     passos: [
+      "Verifique se a pessoa está respirando assim que perceber o desmaio — isso deve ser conferido imediatamente, não só depois de um tempo.",
       "Deite a pessoa e eleve as pernas cerca de 30 cm.",
       "Afrouxe roupas apertadas no pescoço.",
       "Garanta ventilação — afaste aglomerações.",
       "Ao recobrar a consciência, deixe a pessoa se levantar devagar.",
-      "Se não recobrar a consciência em 1 minuto, chame ajuda e verifique a respiração."
+      "Se a pessoa não recobrar a consciência em 1 minuto, ligue 192 imediatamente."
     ],
     naoFaca: ["Não ofereça água ou comida enquanto a pessoa estiver desacordada."]
   },
@@ -405,7 +409,7 @@ const MODULOS = [
       "Proteja a cabeça com algo macio.",
       "Vire a pessoa de lado assim que possível, para evitar engasgo.",
       "Não segure os movimentos da pessoa.",
-      "Cronometre a duração; se passar de 5 minutos, chame ajuda (192)."
+      "Cronometre a duração da crise. Ligue 192 se durar mais de 5 minutos, se for a primeira crise da pessoa, se ocorrerem crises repetidas sem recuperação entre elas, se acontecer na água ou durante a gravidez, se houver lesão, dificuldade para respirar ou engasgo, ou se a pessoa não voltar ao normal depois da crise."
     ],
     naoFaca: ["Não coloque nada na boca da pessoa.", "Não tente conter os movimentos com força."]
   },
@@ -474,7 +478,7 @@ const MODULOS = [
         ],
         passos: [
           "Lave o local com água e sabão.",
-          "Aplique uma compressa fria e mantenha o membro afetado elevado.",
+          "Aplique uma compressa morna para aliviar a dor (evite compressa fria, que pode piorar a dor) e mantenha o membro afetado elevado.",
           "Procure atendimento médico o quanto antes — existe soro específico para picadas de aranhas de maior risco.",
           "Se for seguro fazer sem se expor a um novo risco, uma foto da aranha (a distância) pode ajudar a equipe médica a identificar a espécie."
         ],
@@ -493,7 +497,7 @@ const MODULOS = [
         ],
         passos: [
           "Lave o local com água e sabão.",
-          "Aplique uma compressa fria para aliviar a dor.",
+          "Aplique uma compressa morna para aliviar a dor (evite compressa fria, que pode piorar a dor).",
           "Procure atendimento médico imediatamente — existe soro antiescorpiônico para casos moderados e graves.",
           "Em crianças pequenas, considere emergência médica mesmo sem sintomas graves aparentes no início."
         ],
@@ -512,7 +516,7 @@ const MODULOS = [
         ],
         passos: [
           "Mantenha a pessoa calma e o mais imóvel possível.",
-          "Mantenha o membro picado abaixo do nível do coração.",
+          "Mantenha o membro picado elevado e estendido (esticado).",
           "Retire anéis, pulseiras e roupas apertadas antes que a região inche.",
           "Lave o local delicadamente com água e sabão.",
           "Procure atendimento médico com urgência — existe soro antiofídico específico conforme o tipo de cobra.",
@@ -561,9 +565,9 @@ const MODULOS = [
     passos: [
       "Fale em tom calmo e baixo. Apresente-se e pergunte o nome da pessoa.",
       "Leve-a para um local mais calmo e arejado, se possível, e afaste curiosos.",
-      "Ajude a regular a respiração: inspire contando até 4, segure por 4, solte contando até 6 a 8 — respire junto com a pessoa para dar o ritmo.",
+      "Ajude a pessoa a respirar pelo nariz, devagar, usando o diafragma (mais barriga, menos peito) — respire junto com ela para dar o ritmo.",
       "Use uma técnica de ancoragem: peça para a pessoa nomear em voz alta 5 coisas que vê, 4 que ouve e 3 que sente ao toque.",
-      "Fique ao lado dela até a crise passar — costuma durar entre 10 e 30 minutos.",
+      "Fique ao lado dela até a crise passar — costuma ser passageiro, de poucos minutos.",
       "Se for a primeira crise da pessoa, se ela tiver histórico de problema cardíaco, ou se a dor no peito e a falta de ar não melhorarem, procure atendimento médico (192) para descartar causas físicas."
     ],
     naoFaca: [
@@ -589,7 +593,8 @@ const MODULOS = [
     passos: [
       "Antes de tocar na vítima, verifique se ela ainda está em contato com a fonte de energia — se estiver, NÃO a toque.",
       "Se for seguro e rápido, desligue o disjuntor ou desconecte a fonte de energia.",
-      "Se não for possível desligar a energia, afaste a vítima da fonte usando um objeto seco e não condutor (madeira, plástico, borracha) — nunca com as mãos ou objetos metálicos/molhados.",
+      "Se houver fio de rede elétrica caído ou risco de alta tensão (via pública, poste, rede externa), NÃO se aproxime nem tente afastar o fio — mantenha distância e ligue 193 e a concessionária de energia.",
+      "Em choque doméstico de baixa tensão, se não for possível desligar a energia e for seguro agir, afaste a vítima da fonte usando um objeto seco e não condutor (madeira, plástico, borracha) — nunca com as mãos ou objetos metálicos/molhados.",
       "Só depois de garantir que não há mais contato com a corrente, ligue 192 e verifique respiração e consciência.",
       "Se a pessoa não estiver respirando ou não responder, inicie a RCP.",
       "Cubra queimaduras visíveis com um pano limpo e seco, sem apertar, enquanto aguarda o socorro."
@@ -597,6 +602,7 @@ const MODULOS = [
     naoFaca: [
       "Não toque na vítima enquanto ela estiver em contato com a fonte de energia.",
       "Não use objetos metálicos ou molhados para afastar a vítima da fonte.",
+      "Não se aproxime de fios de rede elétrica caídos nem tente afastá-los, mesmo com madeira ou plástico.",
       "Não subestime um choque elétrico só porque não há queimadura visível — a pessoa deve ser avaliada em um hospital mesmo parecendo bem."
     ]
   },
@@ -621,7 +627,7 @@ const MODULOS = [
           "Lave bem as mãos antes de tocar perto do olho.",
           "Não deixe a pessoa esfregar o olho.",
           "Tente lavar o olho com água limpa ou soro fisiológico, direcionando o jato do canto interno para o externo.",
-          "Se o objeto estiver visível na parte branca do olho e sair facilmente com a lavagem ou com a ponta de um pano limpo e úmido, sem tocar na parte colorida (córnea), pode tentar remover delicadamente.",
+          "Se o objeto estiver solto, continue a irrigação com água limpa ou soro fisiológico para tentar removê-lo. Não tente retirar o objeto com pano, pinça ou outro instrumento.",
           "Se não sair com a lavagem, ou estiver cravado ou sobre a parte colorida do olho, cubra o olho sem pressionar e procure atendimento médico."
         ],
         naoFaca: [
@@ -655,7 +661,7 @@ const MODULOS = [
   },
   {
     id: "calor",
-    titulo: "Insolação e exaustão pelo calor",
+    titulo: "Exaustão pelo calor e golpe de calor",
     cor: "#F9A825",
     icone: '<img src="img/icones/icone-calor.webp" alt="" class="icone-modulo-img">',
     imagem: "img/insolacao-ilustracao.webp",
@@ -665,13 +671,16 @@ const MODULOS = [
       url: "https://youtube.com/shorts/-4ONfCNMqRY?is=NfGOOctsLD_3Kbp1"
     }],
     resumo: "Superaquecimento do corpo por exposição ao calor.",
-    sinais: ["Pele muito quente e vermelha, ou fria e úmida", "Confusão mental, tontura, náusea"],
+    sinais: [
+      "Sinais de exaustão pelo calor: suor intenso, fraqueza, tontura, náusea, dor de cabeça ou cãibras",
+      "Sinais de emergência (golpe de calor): pele muito quente (pode estar seca), confusão mental, convulsão, desmaio ou perda de consciência"
+    ],
     passos: [
       "Leve a pessoa para um local fresco e ventilado imediatamente.",
       "Retire excesso de roupa.",
       "Resfrie a pele com panos úmidos ou ventilação, especialmente pescoço, axilas e virilha.",
       "Ofereça água aos poucos, se a pessoa estiver consciente e conseguir engolir.",
-      "Chame ajuda se houver confusão mental, desmaio ou temperatura muito elevada."
+      "Se houver confusão mental, convulsão, desmaio ou perda de consciência, ligue 192 imediatamente e continue resfriando a pessoa enquanto aguarda o socorro."
     ],
     naoFaca: ["Não ofereça bebidas com álcool ou cafeína.", "Não force líquidos se a pessoa estiver confusa ou inconsciente."]
   },
@@ -707,10 +716,9 @@ const MODULOS = [
       },
       {
         id: "leve",
-        nome: "Leve (33°C–35°C)",
+        nome: "Leve",
         imagem: "img/hipotermia-guia-pratico.webp",
         sinais: [
-          "Temperatura corporal aproximada: 33°C a 35°C",
           "Tremores",
           "Mãos e pés frios",
           "Dormência nos braços e pernas",
@@ -731,10 +739,9 @@ const MODULOS = [
       },
       {
         id: "moderada",
-        nome: "Moderada (30°C–33°C)",
+        nome: "Moderada",
         imagem: "img/hipotermia-guia-pratico.webp",
         sinais: [
-          "Temperatura corporal aproximada: 30°C a 33°C",
           "Tremores violentos e incontroláveis",
           "Fala lenta e arrastada",
           "Respiração mais lenta e fraca, pulso fraco",
@@ -755,10 +762,9 @@ const MODULOS = [
       },
       {
         id: "grave",
-        nome: "Grave (abaixo de 30°C)",
+        nome: "Grave",
         imagem: "img/hipotermia-guia-pratico.webp",
         sinais: [
-          "Temperatura corporal aproximada: abaixo de 30°C",
           "Perda de controle dos braços e pernas",
           "Perda dos sentidos / consciência",
           "Respiração superficial, podendo chegar a parar",
@@ -769,8 +775,8 @@ const MODULOS = [
           "Ligue 192 imediatamente — é uma emergência.",
           "Manuseie a pessoa com o mínimo de movimento possível — movimentos bruscos podem provocar arritmia grave e parada cardíaca nessa fase.",
           "Retire-a do frio e do vento, isolando-a do chão frio; retire roupas molhadas e cubra com cobertores secos, sem tentar reaquecer bruscamente.",
-          "Verifique respiração e pulso com calma — em hipotermia grave eles podem estar muito fracos e lentos, então confira por mais tempo que o normal antes de concluir que a pessoa está em parada.",
-          "Se realmente não houver respiração nem pulso, inicie a RCP e continue até a chegada do socorro."
+          "Verifique com calma se a pessoa responde e se respira normalmente — em hipotermia grave a respiração pode estar muito fraca e lenta, então observe por mais tempo que o normal antes de concluir que não há respiração.",
+          "Se a pessoa não responder e não estiver respirando normalmente, inicie a RCP e continue até a chegada do socorro."
         ],
         naoFaca: [
           "Não movimente a pessoa bruscamente.",
